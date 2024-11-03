@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CampaignManagement</name>
+    </assembly>
+    <members>
+        <member name="M:CampaignManagement.Controllers.CampaignsController.GetCampaigns(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Retrieves a paginated list of campaigns.
+            </summary>
+            <param name="page">Page number.</param>
+            <param name="pageSize">Number of records per page.</param>
+             /// <param name="isActive">active campaigns.</param>
+            <returns>List of campaigns</returns>
+        </member>
+        <member name="M:CampaignManagement.Controllers.CampaignsController.GetCampaign(System.Guid)">
+            <summary>
+            Retrieves a specific campaign by its ID.
+            </summary>
+            <param name="id">Campaign ID</param>
+            <returns>Campaign</returns>
+        </member>
+        <member name="M:CampaignManagement.Controllers.CampaignsController.PostCampaign(CampaignManagement.ViewModels.Campaigns.CreateCampaignViewModel)">
+            <summary>
+            Adds a new campaign.
+            </summary>
+            <param name="campaign">Campaign data</param>
+            <returns>The created campaign</returns>
+        </member>
+        <member name="M:CampaignManagement.Helper.SanitizationHelper.SanitizeInput(System.String)">
+            <summary>
+            Sanitizes a string input by removing unwanted characters.
+            </summary>
+            <param name="input">The input string to sanitize.</param>
+            <returns>The sanitized string.</returns>
+        </member>
+        <member name="T:CampaignManagement.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:CampaignManagement.Migrations.ProductIdManualGeneration">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.ProductIdManualGeneration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.ProductIdManualGeneration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.ProductIdManualGeneration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,13 @@
+
+.MuiTableCell-head.table-heading {
+    font-weight: bold; /* Makes the text bold */
+    font-size: 1rem;   /* Adjust the font size */
+    color: #000;    /* Change color to Material UI primary color */
+  }
+  
+  /* Style for when there are no campaigns */
+  .no-campaigns {
+    text-align: center; /* Center the text */
+    font-style: italic; /* Make it italic */
+    color: gray;        /* Change color to indicate no content */
+  }
