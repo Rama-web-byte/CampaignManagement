@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dell Inspiron\\source\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\CampaignManagement.csproj": {}
+    "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\CampaignManagement.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dell Inspiron\\source\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\CampaignManagement.csproj": {
+    "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\CampaignManagement.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dell Inspiron\\source\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\CampaignManagement.csproj",
+        "projectUniqueName": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\CampaignManagement.csproj",
         "projectName": "CampaignManagement",
-        "projectPath": "C:\\Users\\Dell Inspiron\\source\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\CampaignManagement.csproj",
-        "packagesPath": "C:\\Users\\Dell Inspiron\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dell Inspiron\\source\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\obj\\",
+        "projectPath": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\CampaignManagement.csproj",
+        "packagesPath": "C:\\Users\\ramth\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Dell Inspiron\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ramth\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -34,7 +38,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -90,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

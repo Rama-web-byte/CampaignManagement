@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "NxCJwH0CM1dbNbCDPlE1jHVUQWjyG2Z6/R158meOooo=",
+  "Hash": "3kZBDqNtH6dKxrRoer+yBMDFqJApDZ9Wnk4PGcJhic4=",
   "Source": "CampaignManagement",
   "BasePath": "_content/CampaignManagement",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

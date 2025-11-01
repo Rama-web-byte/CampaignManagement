@@ -11,8 +11,10 @@ namespace CampaignManagement.Repositories.Contracts
         Task<IEnumerable<Campaign>> GetActiveCampaignsAsync();
         
         Task<IEnumerable<Product>> GetActiveProducts();
-        //Task UpdateAsync(Campaign campaign);
-        //Task DeleteAsync(Guid id);
+        Task UpdateAsync(Campaign campaign);
+        Task DeleteAsync(Guid id);
+
+        Task<bool>ProductExistAsync(Guid productId);
     }
 
 }

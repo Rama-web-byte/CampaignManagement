@@ -18,18 +18,14 @@ namespace CampaignManagement.Services.Implementations
         private readonly IMemoryCache _cache;
         private const string CacheKey = "campaigns_cache";
         private readonly IMapper _mapper;
-        private readonly List<string> _cacheKeys;
+        private  static readonly List<string> _cacheKeys=new();
         public CampaignService(ICampaignRepository campaignRepository, IMemoryCache cache,IMapper mapper)
         {
             _campaignRepository = campaignRepository;
             _cache = cache;
             _mapper = mapper;
-            _cacheKeys = new List<string>();
-        }
-
-
-
-      
+            
+        }    
 
         public async Task<IEnumerable<CampaignsListViewModel>> GetAllCampaignsAsync(int page, int pageSize, bool active)
         {
@@ -107,26 +103,60 @@ namespace CampaignManagement.Services.Implementations
 
             return _mapper.Map<List<ViewModels.Products.ProductViewModel>>(products);
         }
-        public async Task<Campaign> AddCampaignAsync(CreateCampaignViewModel campaign)
+
+      
+        public async Task<CampaignViewModel> AddCampaignAsync(CreateCampaignViewModel campaign)
         {
-            var newcampaign = _mapper.Map<Campaign>(campaign);
 
+            var productExist = await _campaignRepository.ProductExistAsync(campaign.ProductId);
+            if (!productExist)
+            {
+                throw new KeyNotFoundException($"Product with ID{campaign.ProductId} does not exist.");
+            }
+            // Map incoming ViewModel to entity
+            var newCampaign = _mapper.Map<Campaign>(campaign);
 
-            await _campaignRepository.AddAsync(newcampaign);
+            // Optional: ensure IsActive logic is updated if not handled by AutoMapper
+            newCampaign.IsActive = newCampaign.StartDate <= DateTime.UtcNow && newCampaign.EndDate >= DateTime.UtcNow;
+
+            // Clear cache before saving new data
             ClearAllCache();
 
-            return newcampaign;
+            // Add campaign to database
+            await _campaignRepository.AddAsync(newCampaign);
+
+            // Retrieve the saved campaign (including Product info) for returning
+            var savedCampaign = await _campaignRepository.GetByIdAsync(newCampaign.CampaignId);
+
+            // Map entity to ViewModel
+            var campaignViewModel = _mapper.Map<CampaignViewModel>(savedCampaign);
+
+            return campaignViewModel;
         }
 
-        //public async Task UpdateCampaignAsync(CampaignViewModel campaign)
-        //{
-        //    await _campaignRepository.UpdateAsync(campaign);
-        //}
 
-        //public async Task DeleteCampaignAsync(Guid id)
-        //{
-        //    await _campaignRepository.DeleteAsync(id);
-        //}
+        public async Task UpdateCampaignAsync(CampaignViewModel updatecampaign)
+        {
+             var campaignExist=await _campaignRepository.GetByIdAsync(updatecampaign.CampaignId);
+            if(campaignExist==null)
+            {
+                throw new KeyNotFoundException($"Campaign with ID {updatecampaign.CampaignId} doesn't exist.");
+            }
+            var campaignEntity = _mapper.Map<Campaign>(updatecampaign);
+            await _campaignRepository.UpdateAsync(campaignEntity);
+            ClearAllCache();
+        }
+
+        public async Task DeleteCampaignAsync(Guid id)
+        {
+            var campaignExist = await _campaignRepository.GetByIdAsync(id);
+            if(campaignExist==null)
+            {
+                throw new KeyNotFoundException($"Campaign with ID{id} doesn't exist.");
+            }
+            await _campaignRepository.DeleteAsync(id);
+            ClearAllCache();
+        }
 
         private void ClearAllCache()
         {

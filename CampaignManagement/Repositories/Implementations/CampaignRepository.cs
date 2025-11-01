@@ -42,27 +42,31 @@ namespace CampaignManagement.Repositories.Implementations
 
             return products;
         }
+        public async Task<bool> ProductExistAsync(Guid ProductID)
+        {
+            return await _context.Products.AnyAsync(p=>p.ProductId == ProductID);
+        }
         public async Task AddAsync(Campaign campaign)
        {
             await _context.Campaigns.AddAsync(campaign);
             await _context.SaveChangesAsync();
         }
 
-        //public async Task UpdateAsync(Campaign campaign)
-        //{
-        //    _context.Campaigns.Update(campaign);
-        //    await _context.SaveChangesAsync();
-        //}
+        public async Task UpdateAsync(Campaign campaign)
+        {
+            _context.Campaigns.Update(campaign);
+            await _context.SaveChangesAsync();
+        }
 
-        //public async Task DeleteAsync(Guid id)
-        //{
-        //    var campaign = await _context.Campaigns.FindAsync(id);
-        //    if (campaign != null)
-        //    {
-        //        _context.Campaigns.Remove(campaign);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //}
+        public async Task DeleteAsync(Guid id)
+        {
+            var campaign = await _context.Campaigns.FindAsync(id);
+            if (campaign != null)
+            {
+                _context.Campaigns.Remove(campaign);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 
 }

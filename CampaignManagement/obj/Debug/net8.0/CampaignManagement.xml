@@ -27,6 +27,13 @@
             <param name="campaign">Campaign data</param>
             <returns>The created campaign</returns>
         </member>
+        <member name="M:CampaignManagement.Controllers.CampaignsController.DeleteCampaign(System.Guid)">
+            <summary>
+            Deletes a campaign by its ID.
+            </summary>
+            <param name="id">Campaign ID</param>
+            <returns>Result of the operation</returns>
+        </member>
         <member name="M:CampaignManagement.Helper.SanitizationHelper.SanitizeInput(System.String)">
             <summary>
             Sanitizes a string input by removing unwanted characters.

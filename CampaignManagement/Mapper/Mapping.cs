@@ -31,7 +31,12 @@ namespace CampaignManagement.Mapper
 
 
             CreateMap<Models.Product, ViewModels.Products.ProductViewModel>();
+
+            CreateMap<CampaignViewModel, Campaign>()
+            .ForMember(dest => dest.Product, opt => opt.Ignore()) // ignore navigation property
+            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.StartDate <= DateTime.Now && src.EndDate >= DateTime.Now));
+
         }
 
-}
+    }
 }
