@@ -1,6 +1,6 @@
 // src/api/campaignApi.js
 
-const API_URL = "https://localhost:64291/api/Campaigns"; // Replace with your actual API endpoint
+const API_URL = "https://localhost:44340/api/Campaigns"; // Replace with your actual API endpoint
 
 // src/Services/APIService.js
 

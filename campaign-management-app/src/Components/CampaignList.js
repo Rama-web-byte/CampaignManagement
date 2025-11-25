@@ -55,15 +55,20 @@ const CampaignList = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {campaigns.length > 0 ? (
-                        campaigns.map((campaign) => (
-                            <TableRow key={campaign.campaignId}>
-                                <TableCell>{campaign.campaignsName}</TableCell>
-                                <TableCell>{campaign.productName}</TableCell>
-                                <TableCell>{new Date(campaign.startDate).toLocaleDateString()}</TableCell>
-                                <TableCell>{new Date(campaign.endDate).toLocaleDateString()}</TableCell>
-                            </TableRow>
-                        ))
+                    {
+                    campaigns.length > 0 ? (
+                        campaigns.map
+                        (
+                            (campaign) => 
+                                            (
+                                        <TableRow key={campaign.campaignId}>
+                                            <TableCell>{campaign.campaignsName}</TableCell>
+                                            <TableCell>{campaign.productName}</TableCell>
+                                            <TableCell>{new Date(campaign.startDate).toLocaleDateString()}</TableCell>
+                                            <TableCell>{new Date(campaign.endDate).toLocaleDateString()}</TableCell>
+                                        </TableRow>
+                                            )
+                        )
                     ) : (
                         <TableRow>
                             <TableCell colSpan={4} align="center">

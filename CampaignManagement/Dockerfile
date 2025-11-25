@@ -1,26 +1,33 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-#For more information, please see https://aka.ms/containercompat
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-nanoserver-1809 AS base
+# Base image for runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
+#ENV DOTNET_RUNNING_IN_CONTAINER=true
+#ENV DOTNET_USE_POLLING_FILE_WATCHER=1
+#ENV DOTNET_NOLOGO=true
+#ENV DOTNET_CLI_TELEMETRY_OPTOUT=true
+#ENV ASPNETCORE_ENVIRONMENT=Production
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
+# Build image
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CampaignManagement.csproj", "."]
-RUN dotnet restore "./././CampaignManagement.csproj"
-COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./CampaignManagement.csproj" -c %BUILD_CONFIGURATION% -o /app/build
 
+# Copy csproj and restore dependencies first (caching layer)
+COPY ["CampaignManagement.csproj", "./"]
+RUN dotnet restore "./CampaignManagement.csproj"
+
+# Copy remaining files and build
+COPY . .
+RUN dotnet build "./CampaignManagement.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Publish stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CampaignManagement.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./CampaignManagement.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+# Final stage
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

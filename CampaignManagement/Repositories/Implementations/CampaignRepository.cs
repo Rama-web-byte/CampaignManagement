@@ -17,21 +17,29 @@ namespace CampaignManagement.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<Campaign>> GetAllAsync()
+        public async Task<IEnumerable<Campaign>> GetAllCampaignsAsync(int pageNo, int pageSize)
         {
-            var campaigns = await _context.Campaigns.Include(c => c.Product).ToListAsync();
+            
+            var campaigns = await _context.Campaigns.Include(c => c.Product)
+                                                    .OrderBy(c=>c.StartDate)
+                                                    .Skip((pageNo-1)*pageSize)
+                                                    .Take(pageSize)
+                                                    .ToListAsync();
             return campaigns;
         }
-        public async Task<IEnumerable<Campaign>> GetActiveCampaignsAsync()
+        public async Task<IEnumerable<Campaign>> GetActiveCampaignsAsync(int pageNo, int pageSize)
         {
             var campaigns = await _context.Campaigns
             .Include(c => c.Product)
             .Where(c => c.IsActive)  // Apply filter for active campaigns
+            .OrderBy(c=>c.StartDate)
+            .Skip((pageNo-1)*pageSize)
+            .Take(pageSize)
             .ToListAsync();
 
             return campaigns;
         }
-        public async Task<Campaign> GetByIdAsync(Guid id)
+        public async Task<Campaign> GetCampaignByIdAsync(Guid id)
         {
             return await _context.Campaigns.Include(c => c.Product).FirstOrDefaultAsync(c => c.CampaignId == id);  // Fetch campaign by ID
         }
@@ -46,19 +54,19 @@ namespace CampaignManagement.Repositories.Implementations
         {
             return await _context.Products.AnyAsync(p=>p.ProductId == ProductID);
         }
-        public async Task AddAsync(Campaign campaign)
+        public async Task CreateCampaignAsync(Campaign campaign)
        {
             await _context.Campaigns.AddAsync(campaign);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Campaign campaign)
+        public async Task UpdateCampaignAsync(Campaign campaign)
         {
             _context.Campaigns.Update(campaign);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteCampaignAsync(Guid id)
         {
             var campaign = await _context.Campaigns.FindAsync(id);
             if (campaign != null)
@@ -67,6 +75,16 @@ namespace CampaignManagement.Repositories.Implementations
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<int> GetAllCampaignsCountAsync(bool active)
+        {
+            var query =  _context.Campaigns.AsQueryable();
+            if(active)
+            query=query.Where(s=>s.IsActive);
+           return  await query.CountAsync();
+        }
+
+     
     }
 
 }

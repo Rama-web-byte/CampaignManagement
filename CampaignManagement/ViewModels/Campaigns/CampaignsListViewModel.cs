@@ -11,6 +11,8 @@ namespace CampaignManagement.ViewModels.Campaigns
         public int TotalPages { get; set; }         // Total number of pages
         public int PageSize { get; set; }           // Number of items per page
         public int TotalCount { get; set; }         // Total number of campaigns
+
+        public string Message { get; set; }
     }
 }
 

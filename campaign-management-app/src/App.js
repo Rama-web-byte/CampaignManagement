@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import CreateCampaign from '../src/Components/AddCampaign'; // Import the CreateCampaign component
 import CampaignList from '../src/Components/CampaignList'; // Import the CampaignList component
+import WorkOut from '../src/Components/workout'; // Import the CampaignList component
 
 const App = () => {
   return (
@@ -19,7 +20,8 @@ const App = () => {
           </ul>
         </nav>
         <Routes>
-          <Route path="/" element={<CampaignList />} /> {/* Home Page */}
+          <Route path="/" element={<WorkOut/>} /> {/* Home Page */}
+          <Route path="/list" element={<CampaignList/>} /> {/* Home Page */}
           <Route path="/create-campaign" element={<CreateCampaign />} /> {/* Create Campaign Page */}
         </Routes>
       </div>

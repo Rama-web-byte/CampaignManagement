@@ -16,7 +16,6 @@ namespace CampaignManagement.Services.Implementations
     {
         private readonly ICampaignRepository _campaignRepository;
         private readonly IMemoryCache _cache;
-        private const string CacheKey = "campaigns_cache";
         private readonly IMapper _mapper;
         private  static readonly List<string> _cacheKeys=new();
         public CampaignService(ICampaignRepository campaignRepository, IMemoryCache cache,IMapper mapper)
@@ -27,44 +26,39 @@ namespace CampaignManagement.Services.Implementations
             
         }    
 
-        public async Task<IEnumerable<CampaignsListViewModel>> GetAllCampaignsAsync(int page, int pageSize, bool active)
+        public async Task<CampaignsListViewModel> GetAllCampaignsAsync(int page, int pageSize, bool active)
         {
             // Create a unique cache key based on the page, pageSize, and active filter
             string cacheKey = $"Campaigns_Page_{page}_Size_{pageSize}_Active_{active}";
 
             // Try to get data from cache
-            if (!_cache.TryGetValue(cacheKey, out List<CampaignsListViewModel> cachedCampaigns))
+            if (!_cache.TryGetValue(cacheKey, out CampaignsListViewModel? cachedCampaigns))
             {
                 // Fetch only the necessary campaigns from the database (either all or active based on 'active' parameter)
                 var campaigns = active
-                    ? await _campaignRepository.GetActiveCampaignsAsync() // Fetch only active campaigns
-                    : await _campaignRepository.GetAllAsync(); // Fetch all campaigns
+                    ? await _campaignRepository.GetActiveCampaignsAsync(page, pageSize) // Fetch only active campaigns
+                    : await _campaignRepository.GetAllCampaignsAsync(page, pageSize); // Fetch all campaigns
 
                 // Calculate total count and pages based on the filtered data
-                var totalCount = campaigns.Count();
-                var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+                var totalCount = await _campaignRepository.GetAllCampaignsCountAsync(active);
+                var totalPages = totalCount ==0?0:(int)Math.Ceiling((double)totalCount / pageSize);
 
-                // Paginate the campaigns
-                var paginatedCampaigns = campaigns
-                    .OrderBy(c => c.StartDate)
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+               
 
                 // Map campaigns to view models
-                var campaignViewModels = _mapper.Map<List<CampaignViewModel>>(paginatedCampaigns);
+                var campaignViewModels = _mapper.Map<List<CampaignViewModel>>(campaigns);
 
-                var campaignsListViewModel = new CampaignsListViewModel
+                cachedCampaigns = new CampaignsListViewModel
                 {
                     Campaigns = campaignViewModels,
                     CurrentPage = page,
                     TotalPages = totalPages,
                     PageSize = pageSize,
-                    TotalCount = totalCount
+                    TotalCount = totalCount,
+                    Message=totalCount==0?"No Campaigns Found":""
                 };
 
-                // Cache the result
-                cachedCampaigns = new List<CampaignsListViewModel> { campaignsListViewModel };
+               
 
                 var cacheOptions = new MemoryCacheEntryOptions
                 {
@@ -77,31 +71,24 @@ namespace CampaignManagement.Services.Implementations
                 
 
             }
-            else
-            {
-               // Console.WriteLine(string.Format("Cache hit for key: {0}", cacheKey));
-            }
-
-            // Return the cached or newly fetched data
-
-            PrintAllCacheKeys();
+           
            
             return cachedCampaigns;
         }
 
 
 
-        public async Task<CampaignViewModel> GetCampaignByIdAsync(Guid id)
+        public async Task<CampaignViewModel?> GetCampaignByIdAsync(Guid id)
         {
-           var campaign=  await _campaignRepository.GetByIdAsync(id);
-            return _mapper.Map<CampaignViewModel>(campaign);
+           var campaign=  await _campaignRepository.GetCampaignByIdAsync(id);
+            return campaign==null?null:_mapper.Map<CampaignViewModel>(campaign);
         }
-        public async Task<IEnumerable<ViewModels.Products.ProductViewModel>> GetActiveProducts()
+        public async Task<IEnumerable<ProductViewModel>> GetActiveProducts()
         {
             var products = await _campaignRepository.GetActiveProducts();
 
 
-            return _mapper.Map<List<ViewModels.Products.ProductViewModel>>(products);
+            return _mapper.Map<List<ProductViewModel>>(products);
         }
 
       
@@ -123,10 +110,10 @@ namespace CampaignManagement.Services.Implementations
             ClearAllCache();
 
             // Add campaign to database
-            await _campaignRepository.AddAsync(newCampaign);
+            await _campaignRepository.CreateCampaignAsync(newCampaign);
 
             // Retrieve the saved campaign (including Product info) for returning
-            var savedCampaign = await _campaignRepository.GetByIdAsync(newCampaign.CampaignId);
+            var savedCampaign = await _campaignRepository.GetCampaignByIdAsync(newCampaign.CampaignId);
 
             // Map entity to ViewModel
             var campaignViewModel = _mapper.Map<CampaignViewModel>(savedCampaign);
@@ -135,36 +122,42 @@ namespace CampaignManagement.Services.Implementations
         }
 
 
-        public async Task UpdateCampaignAsync(CampaignViewModel updatecampaign)
+        public async Task UpdateCampaignAsync(CampaignViewModel updateCampaign)
         {
-             var campaignExist=await _campaignRepository.GetByIdAsync(updatecampaign.CampaignId);
-            if(campaignExist==null)
+             var existingCampaign=await _campaignRepository.GetCampaignByIdAsync(updateCampaign.CampaignId);
+            if(existingCampaign == null)
             {
-                throw new KeyNotFoundException($"Campaign with ID {updatecampaign.CampaignId} doesn't exist.");
+                throw new KeyNotFoundException($"Campaign with ID {updateCampaign.CampaignId} doesn't exist.");
             }
-            var campaignEntity = _mapper.Map<Campaign>(updatecampaign);
-            await _campaignRepository.UpdateAsync(campaignEntity);
+
+            existingCampaign.IsActive= updateCampaign.IsActive;
+            existingCampaign.StartDate = updateCampaign.StartDate;
+            existingCampaign.EndDate = updateCampaign.EndDate;
+            existingCampaign.CampaignsName= updateCampaign.CampaignsName;
+
+         
+            await _campaignRepository.UpdateCampaignAsync(existingCampaign);
             ClearAllCache();
         }
 
         public async Task DeleteCampaignAsync(Guid id)
         {
-            var campaignExist = await _campaignRepository.GetByIdAsync(id);
+            var campaignExist = await _campaignRepository.GetCampaignByIdAsync(id);
             if(campaignExist==null)
             {
                 throw new KeyNotFoundException($"Campaign with ID{id} doesn't exist.");
             }
-            await _campaignRepository.DeleteAsync(id);
+            await _campaignRepository.DeleteCampaignAsync(id);
             ClearAllCache();
         }
 
         private void ClearAllCache()
         {
             // Clear all cache entries at once using LINQ
-           Console.WriteLine("_cacheKeys.count:{0}",$"{_cacheKeys.Count}");
-            var cacheKeysToRemove = _cacheKeys.AsEnumerable();
+     
+       
 
-            foreach (var key in cacheKeysToRemove)
+            foreach (var key in _cacheKeys)
             {
                 _cache.Remove(key);
             }
@@ -173,24 +166,7 @@ namespace CampaignManagement.Services.Implementations
             _cacheKeys.Clear();
         }
 
-        public void PrintAllCacheKeys()
-        {
-            List<string> checkcache = new List<string>();
-            checkcache.Add("Campaigns_Page_1_Size_5_Active_False");
-            checkcache.Add("Campaigns_Page_2_Size_5_Active_False");
-            checkcache.Add("Campaigns_Page_3_Size_5_Active_False");
-            checkcache.Add("Campaigns_Page_4_Size_5_Active_False");
-            foreach (var key in checkcache)
-            {
-
-
-                if (_cache.TryGetValue(checkcache, out List<CampaignsListViewModel> cachedCampaigns))
-                {
-                    Console.WriteLine("inside prinallcache{0}",key);
-                }
-            }
-             
-        }
+        
     }
 
 }

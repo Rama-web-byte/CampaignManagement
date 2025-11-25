@@ -4,17 +4,21 @@ namespace CampaignManagement.Repositories.Contracts
 
     public interface ICampaignRepository
     {
-        Task<IEnumerable<Campaign>> GetAllAsync();
-        Task<Campaign> GetByIdAsync(Guid id);
-        Task AddAsync(Campaign campaign);
+        Task<IEnumerable<Campaign>> GetAllCampaignsAsync(int page, int pageSize);
+        Task<Campaign> GetCampaignByIdAsync(Guid id);
+        Task CreateCampaignAsync(Campaign campaign);
 
-        Task<IEnumerable<Campaign>> GetActiveCampaignsAsync();
+        Task<IEnumerable<Campaign>> GetActiveCampaignsAsync(int page, int pageSize);
         
         Task<IEnumerable<Product>> GetActiveProducts();
-        Task UpdateAsync(Campaign campaign);
-        Task DeleteAsync(Guid id);
+        Task UpdateCampaignAsync(Campaign campaign);
+        Task DeleteCampaignAsync(Guid id);
 
         Task<bool>ProductExistAsync(Guid productId);
+
+        Task<int>GetAllCampaignsCountAsync(bool active);
+
+     
     }
 
 }

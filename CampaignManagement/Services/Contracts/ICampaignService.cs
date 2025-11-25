@@ -8,8 +8,8 @@ namespace CampaignManagement.Services.Contracts
 
     public interface ICampaignService
     {
-        Task<IEnumerable<CampaignsListViewModel>> GetAllCampaignsAsync(int page, int pageSize,bool active);
-        Task<CampaignViewModel> GetCampaignByIdAsync(Guid id);
+        Task<CampaignsListViewModel> GetAllCampaignsAsync(int page, int pageSize,bool active);
+        Task<CampaignViewModel?> GetCampaignByIdAsync(Guid id);
         Task<CampaignViewModel> AddCampaignAsync(CreateCampaignViewModel campaign);
         Task<IEnumerable<ViewModels.Products.ProductViewModel>> GetActiveProducts();
         

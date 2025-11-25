@@ -88,7 +88,8 @@ const CreateCampaign = () => {
           disabled={loading || products.length === 0}
         >
           <option value="">Select a product</option>
-          {loading ? (
+          {loading ? 
+          (
             <option disabled>Loading products...</option>
           ) : (
             products.map((prod) => (
