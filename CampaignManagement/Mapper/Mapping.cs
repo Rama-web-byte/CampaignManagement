@@ -2,6 +2,7 @@
 using CampaignManagement.Models;
 using CampaignManagement.ViewModels.Campaigns;
 using CampaignManagement.ViewModels.Products;
+using CampaignManagement.ViewModels.Users;
 
 namespace CampaignManagement.Mapper
 {
@@ -22,12 +23,13 @@ namespace CampaignManagement.Mapper
             CreateMap<Campaign, CampaignViewModel>()
            .ForMember(dest => dest.ProductName, opt=> opt.MapFrom(src => src.Product.ProductName));
 
-            CreateMap<Campaign, CampaignsListViewModel>()
-           .ForMember(dest => dest.Campaigns, opt => opt.MapFrom(src => new List<Campaign> { src }))
+            CreateMap<List<Campaign>, CampaignsListViewModel>()
+           .ForMember(dest => dest.Campaigns, opt => opt.MapFrom(src => src))
            .ForMember(dest => dest.CurrentPage, opt => opt.Ignore()) // Set defaults as necessary
-           .ForMember(dest => dest.TotalPages, opt => opt.Ignore()) 
-           .ForMember(dest => dest.PageSize, opt => opt.Ignore()) 
-           .ForMember(dest => dest.TotalCount, opt => opt.Ignore()); 
+           .ForMember(dest => dest.TotalPages, opt => opt.Ignore())
+           .ForMember(dest => dest.PageSize, opt => opt.Ignore())
+           .ForMember(dest => dest.TotalCount, opt => opt.Ignore())
+           .ForMember(dest=>  dest.Message,opt=>opt.Ignore());
 
 
             CreateMap<Models.Product, ViewModels.Products.ProductViewModel>();
@@ -35,6 +37,24 @@ namespace CampaignManagement.Mapper
             CreateMap<CampaignViewModel, Campaign>()
             .ForMember(dest => dest.Product, opt => opt.Ignore()) // ignore navigation property
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.StartDate <= DateTime.Now && src.EndDate >= DateTime.Now));
+
+
+            CreateMap<User, UserViewModel>();
+            CreateMap<User,AdminUserViewModel>();
+            CreateMap<CreateUserViewModel, User>();
+
+            CreateMap<List<User>, UserListViewModel>()
+            .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src))
+            .ForMember(dest => dest.CurrentPage, opt => opt.Ignore())
+            .ForMember(dest => dest.TotalPages, opt => opt.Ignore())
+            .ForMember(dest => dest.PageSize, opt => opt.Ignore())
+            .ForMember(dest => dest.TotalCount, opt => opt.Ignore())
+            .ForMember(dest => dest.Message, opt => opt.Ignore());
+            
+
+
+
+
 
         }
 

@@ -46,17 +46,16 @@ namespace CampaignManagement.Services.Implementations
                
 
                 // Map campaigns to view models
-                var campaignViewModels = _mapper.Map<List<CampaignViewModel>>(campaigns);
+                 cachedCampaigns = _mapper.Map<CampaignsListViewModel>(campaigns);
 
-                cachedCampaigns = new CampaignsListViewModel
-                {
-                    Campaigns = campaignViewModels,
-                    CurrentPage = page,
-                    TotalPages = totalPages,
-                    PageSize = pageSize,
-                    TotalCount = totalCount,
-                    Message=totalCount==0?"No Campaigns Found":""
-                };
+
+
+                cachedCampaigns.CurrentPage = page;
+                cachedCampaigns.TotalPages = totalPages;
+                cachedCampaigns.PageSize = pageSize;
+                cachedCampaigns.TotalCount = totalCount;
+                cachedCampaigns.Message = totalCount == 0 ? "No Campaigns Found" : "";
+                
 
                
 
@@ -122,33 +121,35 @@ namespace CampaignManagement.Services.Implementations
         }
 
 
-        public async Task UpdateCampaignAsync(CampaignViewModel updateCampaign)
+        public async Task<bool> UpdateCampaignAsync(UpdateCampaignViewModel updateCampaign)
         {
              var existingCampaign=await _campaignRepository.GetCampaignByIdAsync(updateCampaign.CampaignId);
             if(existingCampaign == null)
             {
-                throw new KeyNotFoundException($"Campaign with ID {updateCampaign.CampaignId} doesn't exist.");
+                return false;
             }
 
-            existingCampaign.IsActive= updateCampaign.IsActive;
+           // existingCampaign.IsActive= updateCampaign.IsActive;
             existingCampaign.StartDate = updateCampaign.StartDate;
             existingCampaign.EndDate = updateCampaign.EndDate;
-            existingCampaign.CampaignsName= updateCampaign.CampaignsName;
+            existingCampaign.CampaignName= updateCampaign.CampaignName;
 
          
             await _campaignRepository.UpdateCampaignAsync(existingCampaign);
             ClearAllCache();
+            return true;
         }
 
-        public async Task DeleteCampaignAsync(Guid id)
+        public async Task<bool> DeleteCampaignAsync(Guid id)
         {
             var campaignExist = await _campaignRepository.GetCampaignByIdAsync(id);
             if(campaignExist==null)
             {
-                throw new KeyNotFoundException($"Campaign with ID{id} doesn't exist.");
+                return false;
             }
             await _campaignRepository.DeleteCampaignAsync(id);
             ClearAllCache();
+            return true;
         }
 
         private void ClearAllCache()

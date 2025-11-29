@@ -65,5 +65,17 @@
         <member name="M:CampaignManagement.Migrations.ProductIdManualGeneration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:CampaignManagement.Migrations.adduserclass">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.adduserclass.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.adduserclass.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.adduserclass.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

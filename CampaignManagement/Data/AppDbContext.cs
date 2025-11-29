@@ -13,7 +13,11 @@ namespace CampaignManagement.Data
 
         public DbSet<Campaign> Campaigns { get; set; }
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<User> Users { get; set; }
         
+
+
        
     }
 

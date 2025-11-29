@@ -13,8 +13,8 @@ namespace CampaignManagement.Services.Contracts
         Task<CampaignViewModel> AddCampaignAsync(CreateCampaignViewModel campaign);
         Task<IEnumerable<ViewModels.Products.ProductViewModel>> GetActiveProducts();
         
-        Task UpdateCampaignAsync(CampaignViewModel campaign);
-        Task DeleteCampaignAsync(Guid id);
+        Task <bool>UpdateCampaignAsync(UpdateCampaignViewModel campaign);
+        Task<bool> DeleteCampaignAsync(Guid id);
     }
 
 }

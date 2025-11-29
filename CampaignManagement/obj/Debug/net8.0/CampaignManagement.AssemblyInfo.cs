@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CampaignManagement")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+95bc1753804847693307f9620d5d76cc5a9b7d56")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f990f5ef55f968f1dea0fe3436ddd188497060b")]
 [assembly: System.Reflection.AssemblyProductAttribute("CampaignManagement")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CampaignManagement")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

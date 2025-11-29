@@ -7,6 +7,8 @@ using CampaignManagement.ViewModels.Campaigns;
 using Microsoft.EntityFrameworkCore;
 using CampaignManagement.ViewModels.Products;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CampaignManagement.Controllers
 {
@@ -43,8 +45,9 @@ namespace CampaignManagement.Controllers
         /// <param name="pageSize">Number of records per page.</param>
         ///  /// <param name="isActive">active campaigns.</param>
         /// <returns>List of campaigns</returns>
+        [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CampaignsListViewModel>>> GetCampaigns(int page = 1, int pageSize = 10, bool isActive = false)
+        public async Task<ActionResult<CampaignsListViewModel>> GetCampaigns(int page = 1, int pageSize = 10, bool isActive = false)
         {
             try
             {
@@ -52,8 +55,8 @@ namespace CampaignManagement.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
-                return StatusCode(MessageConstants.InternalError, ex.Message);
+                _logger.LogError(ex, "Error fetching campaigns");
+                return StatusCode(MessageConstants.InternalError, "An Unexpected error occured");
             }
         }
 
@@ -63,6 +66,7 @@ namespace CampaignManagement.Controllers
         /// <param name="id">Campaign ID</param>
         /// <returns>Campaign</returns>
         // GET: api/campaigns/{id}
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<CampaignViewModel>> GetCampaign(Guid id)
         {
@@ -80,16 +84,17 @@ namespace CampaignManagement.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, string.Format(MessageConstants.ErrorRetrievingCampaign,id));
-                return StatusCode(MessageConstants.InternalError, ex.Message);
+                return StatusCode(MessageConstants.InternalError, "An Unexpected error occured");
             }
         }
 
-       
+
         /// <summary>
         /// Adds a new campaign.
         /// </summary>
         /// <param name="campaign">Campaign data</param>
         /// <returns>The created campaign</returns>
+        [Authorize(Roles = "Admin,CampaignOwner")]
         [HttpPost]
         public async Task<ActionResult<CampaignViewModel>> PostCampaign(CreateCampaignViewModel campaign)
         {
@@ -107,12 +112,14 @@ namespace CampaignManagement.Controllers
                 _logger.LogInformation(MessageConstants.CampaignCreatedSuccessfully);
                 return CreatedAtAction(nameof(GetCampaign), new { id = newModel.CampaignId }, newModel);
             }
-            catch(KeyNotFoundException ex)
+            
+            catch (DbUpdateException ex)
             {
-                _logger.LogError(ex, ex.Message);
-                return NotFound(ex.Message);
+
+                _logger.LogError(ex.Message);
+                return StatusCode(MessageConstants.InternalError, "An Unexpected DB error occured");
             }
-            catch(InvalidOperationException ex)
+            catch (InvalidOperationException ex)
             {
                 _logger.LogError(ex,ex.Message);
                 return Conflict(ex.Message);
@@ -120,10 +127,10 @@ namespace CampaignManagement.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return StatusCode(MessageConstants.InternalError, ex.Message);
+                return StatusCode(MessageConstants.InternalError, "An Unexpected error occured");
             }
         }
-
+        [Authorize]
         [HttpGet("activeProducts")]
         public async Task<ActionResult<IEnumerable<ViewModels.Products.ProductViewModel>>> GetActiveProducts()
         {
@@ -139,7 +146,7 @@ namespace CampaignManagement.Controllers
             catch (Exception ex)
             {
                 _logger?.LogError(ex, ex.Message);
-                return StatusCode(500,MessageConstants.InternalError);
+                return StatusCode(MessageConstants.InternalError, "An Unexpected error occured");
             }
         }
 
@@ -150,8 +157,9 @@ namespace CampaignManagement.Controllers
         // <param name="id">Campaign ID</param>
         // <param name="campaign">Updated campaign data</param>
         // <returns>Result of the operation</returns>
+        [Authorize(Roles = "Admin,CampaignOwner")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCampaign(Guid id, CampaignViewModel campaign)
+        public async Task<IActionResult> UpdateCampaign(Guid id, UpdateCampaignViewModel campaign)
         {
             try
             {
@@ -161,14 +169,20 @@ namespace CampaignManagement.Controllers
                     return BadRequest("Campaign ID mismatch");
                 }
 
-                await _campaignService.UpdateCampaignAsync(campaign);
+                var updated=await _campaignService.UpdateCampaignAsync(campaign);
+                if (!updated)
+                {
+                    _logger.LogWarning($"Campaign with ID {campaign.CampaignId} not found.");
+                    return NotFound($"Campaign with ID {campaign.CampaignId} not found.");
+                }
                 _logger.LogInformation($"Campaign with ID {id} updated successfully.");
                 return NoContent();
             }
-            catch(KeyNotFoundException  ex)
+           catch(DbUpdateException ex)
             {
+
                 _logger.LogError(ex.Message);
-                return NotFound(ex.Message);
+                return StatusCode(MessageConstants.InternalError, "An Unexpected DB error occured");
             }
             catch(InvalidOperationException ex)
             {
@@ -178,7 +192,7 @@ namespace CampaignManagement.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error occurred while updating campaign with ID {id}");
-                return StatusCode(MessageConstants.InternalError, ex.Message);
+                return StatusCode(MessageConstants.InternalError, "An Unexpected error occured");
             }
         }
 
@@ -187,24 +201,31 @@ namespace CampaignManagement.Controllers
         /// </summary>
         /// <param name="id">Campaign ID</param>
         /// <returns>Result of the operation</returns>
+        [Authorize(Roles = "Admin,CampaignOwner")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCampaign(Guid id)
         {
             try
             {
-                await _campaignService.DeleteCampaignAsync(id);
+                var isDeleted=await _campaignService.DeleteCampaignAsync(id);
+                if (!isDeleted)
+                {
+                    _logger.LogInformation($"Campaign with ID {id} not found.");
+                    return NotFound($"The Campaign Id{id} not found");
+                }
                 _logger.LogInformation($"Campaign with ID {id} deleted successfully.");
                 return NoContent();
             }
-            catch (KeyNotFoundException ex)
+            catch (DbUpdateException ex)
             {
-                _logger.LogWarning(ex.Message);
-                return NotFound(ex.Message);
+
+                _logger.LogError(ex.Message);
+                return StatusCode(MessageConstants.InternalError, "An Unexpected DB error occured");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex,ex.Message);
-                return StatusCode(MessageConstants.InternalError, ex.Message);
+                return StatusCode(MessageConstants.InternalError, "An Unexpected error occured");
             }
         }
 
