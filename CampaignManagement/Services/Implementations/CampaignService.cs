@@ -102,9 +102,8 @@ namespace CampaignManagement.Services.Implementations
             // Map incoming ViewModel to entity
             var newCampaign = _mapper.Map<Campaign>(campaign);
 
-            // Optional: ensure IsActive logic is updated if not handled by AutoMapper
-            newCampaign.IsActive = newCampaign.StartDate <= DateTime.UtcNow && newCampaign.EndDate >= DateTime.UtcNow;
 
+           
             // Clear cache before saving new data
             ClearAllCache();
 

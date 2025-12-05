@@ -20,12 +20,13 @@
             <param name="id">Campaign ID</param>
             <returns>Campaign</returns>
         </member>
-        <member name="M:CampaignManagement.Controllers.CampaignsController.PostCampaign(CampaignManagement.ViewModels.Campaigns.CreateCampaignViewModel)">
+        <member name="M:CampaignManagement.Controllers.CampaignsController.CreateCampaign(CampaignManagement.ViewModels.Campaigns.CreateCampaignViewModel)">
             <summary>
             Adds a new campaign.
             </summary>
             <param name="campaign">Campaign data</param>
             <returns>The created campaign</returns>
+            
         </member>
         <member name="M:CampaignManagement.Controllers.CampaignsController.DeleteCampaign(System.Guid)">
             <summary>
@@ -33,6 +34,7 @@
             </summary>
             <param name="id">Campaign ID</param>
             <returns>Result of the operation</returns>
+            
         </member>
         <member name="M:CampaignManagement.Helper.SanitizationHelper.SanitizeInput(System.String)">
             <summary>

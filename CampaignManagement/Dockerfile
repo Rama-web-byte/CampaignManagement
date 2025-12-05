@@ -2,12 +2,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
-#ENV DOTNET_RUNNING_IN_CONTAINER=true
-#ENV DOTNET_USE_POLLING_FILE_WATCHER=1
-#ENV DOTNET_NOLOGO=true
-#ENV DOTNET_CLI_TELEMETRY_OPTOUT=true
-#ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:8080
+# ENV ASPNETCORE_ENVIRONMENT=Production
 
 # Build image
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
@@ -17,7 +13,7 @@ WORKDIR /src
 # Copy csproj and restore dependencies first (caching layer)
 COPY ["CampaignManagement.csproj", "./"]
 RUN dotnet restore "./CampaignManagement.csproj"
-
+l̥
 # Copy remaining files and build
 COPY . .
 RUN dotnet build "./CampaignManagement.csproj" -c $BUILD_CONFIGURATION -o /app/build

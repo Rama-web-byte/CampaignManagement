@@ -30,7 +30,7 @@ namespace CampaignManagement.Repositories.Implementations
         public async Task<IEnumerable<Campaign>> GetActiveCampaignsAsync(int pageNo, int pageSize)
         {
             var campaigns = await _context.Campaigns.Include(c => c.Product)
-                                                    .Where(c => c.IsActive)  // Apply filter for active campaigns
+                                                    .Where(c => c.StartDate<=DateTime.Now && c.EndDate>=DateTime.Now)  // Apply filter for active campaigns
                                                     .OrderBy(c=>c.StartDate)
                                                     .Skip((pageNo-1)*pageSize)
                                                     .Take(pageSize)
@@ -79,7 +79,7 @@ namespace CampaignManagement.Repositories.Implementations
         {
             var query =  _context.Campaigns.AsQueryable();
             if(active)
-            query=query.Where(s=>s.IsActive);
+            query=query.Where(c=>c.StartDate<=DateTime.Now && c.EndDate>=DateTime.Now);
            return  await query.CountAsync();
         }
 

@@ -8,25 +8,73 @@ using CampaignManagement.Services.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CampaignManagement.Validator;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using CampaignManagement.Models;
+using System.IO;
+using Microsoft.AspNetCore.ResponseCompression;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Azure.Monitor.OpenTelemetry.Exporter;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Metrics;
+using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.Extensibility;
+using CampaignManagement.Telemetry;
+using CampaignManagement.Middleware;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 DotNetEnv.Env.Load();
+//Application Insights
+
+builder.Services.AddOpenTelemetry().UseAzureMonitor
+    (options=>
+    { options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
+    });
 
 //DB
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 //var connectionString = builder.Configuration.GetConnectionString("DB_CONNECTION_STRING");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.AddValidatorsFromAssemblyContaining<CampaignValidator>();
+builder.Services.AddScoped<IValidator<User>,UserValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 
 //Register DI
 builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
 builder.Services.AddScoped<ICampaignService, CampaignService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddSingleton<ITelemetryInitializer, JwtUserTelemetryInitializer>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(Mapping));
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
+
+//
+builder.Services.AddResponseCompression(option =>
+{
+    option.EnableForHttps = true;
+    option.Providers.Add<BrotliCompressionProvider>();
+    option.Providers.Add<GzipCompressionProvider>();
+});
+
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = System.IO.Compression.CompressionLevel.Optimal;
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+    options.Level = System.IO.Compression.CompressionLevel.Optimal;
+
+});
 
 //CORS
 builder.Services.AddCors(options =>
@@ -91,7 +139,44 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
+builder.Services.AddRateLimiter(options =>
+{
+    //options.AddPolicy("LoginPolicy", context => RateLimitPartition.GetIpAddressLimiter
+    //(context, ip =>
+    //new FixedWindowRateLimiterOptions
+    //{
+    //    PermitLimit = 5,
+    //    Window = TimeSpan.FromMinutes(1),
+    //    QueueLimit = 0,
+    //    QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+    //}));
+    options.GlobalLimiter=PartitionedRateLimiter.Create<HttpContext,string>(context=>
+    {
+        var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
 
+
+        return RateLimitPartition.GetTokenBucketLimiter(userId, _ => new TokenBucketRateLimiterOptions
+        {
+            TokenLimit = 100,
+            TokensPerPeriod = 100,
+            ReplenishmentPeriod = TimeSpan.FromMinutes(1),
+            QueueLimit = 0,
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+        });
+    });
+    options.AddPolicy("WritePolicy", context =>
+    {
+        var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
+        return RateLimitPartition.GetFixedWindowLimiter(userId, _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit=20,
+            Window = TimeSpan.FromMinutes(1),
+            QueueLimit = 0,
+            QueueProcessingOrder= QueueProcessingOrder.OldestFirst
+        });
+    });
+    options.RejectionStatusCode = 429;
+});
 var app = builder.Build();
 
 using(var scope=app.Services.CreateScope())
@@ -110,11 +195,12 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseResponseCompression();
 app.UseHttpsRedirection();
-
+app.UseMiddleware<JWTUserMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseRateLimiter();
 app.MapControllers();
 
 

@@ -2,8 +2,6 @@
 
 namespace CampaignManagement.Models
 {
-    
-
     public class Campaign
     {
         [Key]
@@ -11,8 +9,7 @@ namespace CampaignManagement.Models
         public string CampaignName { get; set; }  // Campaign Name
         public DateTime StartDate { get; set; }  // Start Date
         public DateTime EndDate { get; set; }  // End Date
-        public bool IsActive { get; set; }  // Is Active
-
+      
         public Guid ProductId { get; set; }
 
         public virtual Product Product { get; set; }

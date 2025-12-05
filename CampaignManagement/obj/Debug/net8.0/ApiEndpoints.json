@@ -37,7 +37,7 @@
   },
   {
     "ContainingType": "CampaignManagement.Controllers.CampaignsController",
-    "Method": "PostCampaign",
+    "Method": "CreateCampaign",
     "RelativePath": "api/Campaigns",
     "HttpMethod": "POST",
     "IsController": true,

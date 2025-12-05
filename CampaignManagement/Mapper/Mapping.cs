@@ -8,20 +8,17 @@ namespace CampaignManagement.Mapper
 {
     public class Mapping:Profile
     {
-        
-
-
         public Mapping()
         {
         
             CreateMap<CreateCampaignViewModel, Campaign>()
             .ForMember(dest => dest.CampaignId, opt => opt.MapFrom(src => Guid.NewGuid())) // Automatically generate a new CampaignId
-            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.StartDate <= DateTime.Now && src.EndDate >= DateTime.Now))
-            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId)); ; // Default IsActive value
+            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId));  // Default IsActive value
 
-        
+
             CreateMap<Campaign, CampaignViewModel>()
-           .ForMember(dest => dest.ProductName, opt=> opt.MapFrom(src => src.Product.ProductName));
+           .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.ProductName))
+           .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.StartDate <= DateTime.Now && src.EndDate >= DateTime.Now));
 
             CreateMap<List<Campaign>, CampaignsListViewModel>()
            .ForMember(dest => dest.Campaigns, opt => opt.MapFrom(src => src))
@@ -35,8 +32,7 @@ namespace CampaignManagement.Mapper
             CreateMap<Models.Product, ViewModels.Products.ProductViewModel>();
 
             CreateMap<CampaignViewModel, Campaign>()
-            .ForMember(dest => dest.Product, opt => opt.Ignore()) // ignore navigation property
-            .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.StartDate <= DateTime.Now && src.EndDate >= DateTime.Now));
+            .ForMember(dest => dest.Product, opt => opt.Ignore()); // ignore navigation property
 
 
             CreateMap<User, UserViewModel>();

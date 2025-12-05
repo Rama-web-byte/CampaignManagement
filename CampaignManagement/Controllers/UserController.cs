@@ -2,11 +2,13 @@
 using CampaignManagement.Models;
 using CampaignManagement.Services.Contracts;
 using CampaignManagement.ViewModels.Users;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+
 
 namespace CampaignManagement.Controllers
 {
@@ -16,14 +18,18 @@ namespace CampaignManagement.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILogger<UserController> _logger;
+        private readonly TelemetryClient _telemetryClient;
+        private readonly IUserContext _userContext;
 
-        public UserController(IUserService userService, ILogger<UserController> logger)
+        public UserController(IUserService userService, ILogger<UserController> logger,TelemetryClient client, IUserContext userContext)
         {
             _userService = userService;
             _logger = logger;
+            _telemetryClient = client;
+            _userContext = userContext;
         }
 
-      //  [Authorize(Roles = "Admin")]
+        //  [Authorize(Roles = "Admin")]
 
         [HttpGet]
 
@@ -85,7 +91,7 @@ namespace CampaignManagement.Controllers
             }
 
         }
-
+        [EnableRateLimiting("WritePolicy")]
         [HttpPost]
         public async Task<ActionResult<UserViewModel>> CreateUser(CreateUserViewModel user)
         {
@@ -104,17 +110,26 @@ namespace CampaignManagement.Controllers
                 }
 
                 var newuser = await _userService.CreateUserAsync(user);
+                _telemetryClient.TrackEvent("UserCreation", new Dictionary<string, string>()
+                {
+                    {"Email",newuser.Email },
+                    {"Role", newuser.Role.ToString()}
+
+                 
+                });
 
                 return newuser;
             }
             catch(DbUpdateException ex)
             {
-                _logger.LogError($"{ex.Message}", ex);
+                _telemetryClient.TrackException(ex);
+                _logger.LogError(ex,"Error in user creation by {userid}",_userContext.UserId);
                 return StatusCode(MessageConstants.InternalError, MessageConstants.ErrorCreatingUser);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message}", ex);
+                _telemetryClient.TrackException(ex);
+                _logger.LogError(ex, "Error in user creation by {userid}", _userContext.UserId);
 
                 return StatusCode(MessageConstants.InternalError, MessageConstants.GeneralError);
 
@@ -138,7 +153,7 @@ namespace CampaignManagement.Controllers
             }
         }
 
-
+        [EnableRateLimiting("WritePolicy")]
         [Authorize(Roles = "Admin")]
         [HttpDelete]
         public async Task<ActionResult<bool>> DeleteUser(Guid userId)
@@ -150,46 +165,67 @@ namespace CampaignManagement.Controllers
             }
             catch(Exception ex)
             {
+                _telemetryClient.TrackException(ex);
+                _logger.LogError(ex, "Error in user{userId} deletion by {userid}",userId, _userContext.UserId);
                 return StatusCode(MessageConstants.InternalError, MessageConstants.GeneralError);
             }
         }
+        [EnableRateLimiting("WritePolicy")]
         [Authorize]
         [HttpPut("self")]
         public async Task<ActionResult<bool>> UpdateUser(UpdateUserViewModel  user)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogWarning(MessageConstants.InvalidModelState);
+                    return BadRequest(ModelState);
+                }
                 var isUpdated = await _userService.UpdateUserAsync(user);
                 return Ok(isUpdated);
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError($"{ex.Message}", ex);
+                _telemetryClient.TrackException(ex);
+                _logger.LogError(ex, "Error in user{userId} updation by {userid}", user.UserId, _userContext.UserId);
                 return StatusCode(MessageConstants.InternalError, MessageConstants.ErrorUpdatingUser);
             }
             catch (Exception ex)
             {
+                _telemetryClient.TrackException(ex);
+                _logger.LogError(ex, "Error in user{userId} updation by {userid}", user.UserId, _userContext.UserId);
                 return StatusCode(MessageConstants.InternalError, MessageConstants.GeneralError);
             }
 
         }
 
+        [EnableRateLimiting("WritePolicy")]
         [Authorize(Roles ="Admin")]
         [HttpPut("Admin")]
         public async Task<ActionResult<bool>> UpdateUserByAdmin(AdminUpdateUserViewModel user)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogWarning(MessageConstants.InvalidModelState);
+                    return BadRequest(ModelState);
+                }
+            
                 var isUpdated = await _userService.UpdateUserByAdminAsync(user);
                 return Ok(isUpdated);
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError($"{ex.Message}", ex);
+                _telemetryClient.TrackException(ex);
+                _logger.LogError(ex, "Error in user{userId} updation by {userid}", user.UserId, _userContext.UserId);
                 return StatusCode(MessageConstants.InternalError, MessageConstants.ErrorUpdatingUser);
             }
             catch (Exception ex)
             {
+                _telemetryClient.TrackException(ex);
+                _logger.LogError(ex, "Error in user{userId} updation by {userid}", user.UserId, _userContext.UserId);
                 return StatusCode(MessageConstants.InternalError, MessageConstants.GeneralError);
             }
 
@@ -205,12 +241,14 @@ namespace CampaignManagement.Controllers
             }
             catch(UnauthorizedAccessException ex)
             {
+                _telemetryClient.TrackException(ex);
                 _logger.LogWarning(ex.Message);
                 return Unauthorized("Invalid Email or Password");
             }
 
             catch(Exception ex)
             {
+                _telemetryClient.TrackException(ex);
                 _logger.LogError(ex.Message);
                 return StatusCode(MessageConstants.InternalError, MessageConstants.ErrorUserLogin);
             }
