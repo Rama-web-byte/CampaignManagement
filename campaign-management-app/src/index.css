@@ -1,13 +1,26 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Blob floating animation */
+@keyframes blob {
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(20px,-25px) scale(1.05);}
+  66%{transform:translate(-15px,20px) scale(0.95);}
+}
+.animate-blob {
+  animation: blob 8s infinite;
+}
+.animation-delay-3000 {
+  animation-delay: 3s;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Fade-in animations */
+@keyframes fadeIn {
+  0% {opacity:0; transform: translateY(20px);}
+  100% {opacity:1; transform: translateY(0);}
 }
+.animate-fadeIn {
+  animation: fadeIn 1s ease forwards;
+}
+.animate-fadeIn.delay-200 { animation-delay: 0.2s; }
+.animate-fadeIn.delay-400 { animation-delay: 0.4s; }
