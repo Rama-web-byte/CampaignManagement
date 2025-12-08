@@ -62,7 +62,6 @@ CampaignManagement API allows management of **campaigns**
 - Azure subscription (Free Tier for demo purposes)  
 
 ---
-
 ## Setup & Run
 
 ### Clone the Repository
@@ -70,77 +69,93 @@ CampaignManagement API allows management of **campaigns**
 ```bash
 git clone <repository-url>
 cd CampaignManagement
-
+```
 ## Architecture
+
 Configure Environment Variables
 
-JWT Secret
+- JWT Secret  
+- Database connection string  
+- Application Insights connection string  
 
-Database connection string
-
-Application Insights connection string
-
-Run Locally
+### Run Locally
+```bash
 dotnet restore
 dotnet build
 dotnet run
+```
 
-Docker
+### Docker
+```bash
 docker build -t campaign-api .
 docker run -p 8080:8080 campaign-api
+```
 
-API Endpoints
-Method	Endpoint	Description	Auth Required
-GET	/api/campaigns	List campaigns (paginated)	Yes
-GET	/api/campaigns/{id}	Get a campaign by ID	Yes
-POST	/api/campaigns	Create a new campaign	Admin/CampaignOwner
-PUT	/api/campaigns/{id}	Update campaign	Admin/CampaignOwner
-DELETE	/api/campaigns/{id}	Delete campaign	Admin/CampaignOwner
-GET	/api/users	List all users	Admin
-POST	/api/users/login	Authenticate user	No
-Authentication
+---
 
-JWT token-based authentication
+## API Endpoints
 
-Roles: Admin, CampaignOwner, User
+| Method | Endpoint             | Description              | Auth Required       |
+|--------|----------------------|--------------------------|---------------------|
+| GET    | /api/campaigns       | List campaigns (paginated) | Yes               |
+| GET    | /api/campaigns/{id}  | Get a campaign by ID     | Yes                 |
+| POST   | /api/campaigns       | Create a new campaign    | Admin/CampaignOwner |
+| PUT    | /api/campaigns/{id}  | Update campaign          | Admin/CampaignOwner |
+| DELETE | /api/campaigns/{id}  | Delete campaign          | Admin/CampaignOwner |
+| GET    | /api/users           | List all users           | Admin               |
+| POST   | /api/users/login     | Authenticate user        | No                  |
 
-Include Authorization: Bearer <token> header in requests
+---
 
-Rate Limiting
+## Authentication
 
-User-based: Limits requests per user per minute
+JWT token-based authentication  
 
-Write operations: Separate limit to prevent abuse
+Roles: **Admin**, **CampaignOwner**, **Analyst**  
 
-Returns 429 Too Many Requests when limits are exceeded
+Include `Authorization: Bearer <token>` header in requests
 
-Logging & Telemetry
+---
 
-Application Insights integration
+## Rate Limiting
 
-Automatic tracking of exceptions, requests, and custom events
+- User-based: Limits requests per user per minute  
+- Write operations: Separate limit to prevent abuse  
+- Returns `429 Too Many Requests` when limits are exceeded  
 
-UserId and CampaignId included in logs for tracing
+---
 
-Example: Track custom event in code
+## Logging & Telemetry
 
+Application Insights integration  
+
+Automatic tracking of exceptions, requests, and custom events  
+
+UserId and CampaignId included in logs for tracing  
+
+**Example: Track custom event in code**
+```csharp
 _telemetryClient.TrackEvent("CampaignCreated", new Dictionary<string, string>
 {
     { "CampaignName", newModel.CampaignName },
     { "ProductId", newModel.ProductId.ToString() }
 });
+```
 
-Docker
+---
 
-Multi-stage Dockerfile for efficient builds
+## Docker
 
-Exposes ports 8080 and 8081
+- Multi-stage Dockerfile for efficient builds  
+- Exposes ports **8080** and **8081**  
+- Environment-based configuration via environment variables  
 
-Environment-based configuration via environment variables
+---
 
-Terraform Infrastructure
+## Terraform Infrastructure
 
-Resource Group: rg-campaign-demo
+Resource Group: `rg-campaign-demo`
+```
 
-Application Insights: Telemetry & logging
+application Insights: Telemetry & logging
 
