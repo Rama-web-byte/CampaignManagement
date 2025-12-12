@@ -102,6 +102,7 @@ namespace CampaignManagement.Controllers
         /// <param name="campaign">Campaign data</param>
         /// <returns>The created campaign</returns>
         /// 
+
         [EnableRateLimiting("WritePolicy")]
         [Authorize(Roles = "Admin,CampaignOwner")]
         [HttpPost]
@@ -115,7 +116,7 @@ namespace CampaignManagement.Controllers
             try
             {
                 // campaign.CampaignName = SanitizationHelper.SanitizeInput(campaign.CampaignName);
-                //campaign.CampaignId = Guid.NewGuid();  // Ensure a new ID is generated
+               
                 var newModel = await _campaignService.AddCampaignAsync(campaign);
                 _telemetryClient.TrackEvent("CampaignCreated", new Dictionary<string, string>
                 {

@@ -2,11 +2,13 @@
 {
     public interface IUserContext
     {
-        string UserId { get; set; }
+        string UserId { get; }
 
-        string UserEmail { get; set; }
+        string UserEmail { get;}
 
-        string UserRole { get; set; }
+        string UserRole { get; }
+
+        string UserName { get; }
 
 
     }

@@ -1,26 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Blob floating animation */
-@keyframes blob {
-  0%,100%{transform:translate(0,0) scale(1);}
-  33%{transform:translate(20px,-25px) scale(1.05);}
-  66%{transform:translate(-15px,20px) scale(0.95);}
-}
-.animate-blob {
-  animation: blob 8s infinite;
-}
-.animation-delay-3000 {
-  animation-delay: 3s;
+
+
+/* Reset layout and eliminate top gap */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
-/* Fade-in animations */
-@keyframes fadeIn {
-  0% {opacity:0; transform: translateY(20px);}
-  100% {opacity:1; transform: translateY(0);}
+/* Ensure body fills viewport and doesn't scroll unless needed */
+body {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto; /* allow vertical scrolling */
 }
-.animate-fadeIn {
-  animation: fadeIn 1s ease forwards;
+
+/* Mobile scroll fix */
+@media (max-width: 640px) {
+  body {
+    overflow-y: auto;
+  }
 }
-.animate-fadeIn.delay-200 { animation-delay: 0.2s; }
-.animate-fadeIn.delay-400 { animation-delay: 0.4s; }

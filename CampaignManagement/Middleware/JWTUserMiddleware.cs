@@ -13,18 +13,18 @@ namespace CampaignManagement.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpcontext,IUserContext userContext)
+        public async Task InvokeAsync(HttpContext httpcontext)//,IUserContext userContext)
         {
-            if (httpcontext.User.Identity?.IsAuthenticated == true)
-            {
-                userContext.UserId = httpcontext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
-                    httpcontext.User.FindFirst("sub")?.Value ?? "Anonymous";
-                userContext.UserEmail = httpcontext.User.FindFirst(ClaimTypes.Email)?.Value ??
-                    httpcontext.User.FindFirst("ClaimTypes.Email")?.Value ?? "None";
-                userContext.UserRole = httpcontext.User.FindFirst(ClaimTypes.Role)?.Value ??
-                    httpcontext.User.FindFirst("ClaimTypes.Role")?.Value ?? "None";
+            //if (httpcontext.User.Identity?.IsAuthenticated == true)
+            //{
+            //    userContext.UserId = httpcontext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
+            //        httpcontext.User.FindFirst("sub")?.Value ?? "Anonymous";
+            //    userContext.UserEmail = httpcontext.User.FindFirst(ClaimTypes.Email)?.Value ??
+            //        httpcontext.User.FindFirst("ClaimTypes.Email")?.Value ?? "None";
+            //    userContext.UserRole = httpcontext.User.FindFirst(ClaimTypes.Role)?.Value ??
+            //        httpcontext.User.FindFirst("ClaimTypes.Role")?.Value ?? "None";
                         
-            }
+            //}
 
             await _next(httpcontext);
         }

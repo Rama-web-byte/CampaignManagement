@@ -79,5 +79,17 @@
         <member name="M:CampaignManagement.Migrations.adduserclass.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:CampaignManagement.Migrations.RemoveIsActiveFromCampaign">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.RemoveIsActiveFromCampaign.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.RemoveIsActiveFromCampaign.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CampaignManagement.Migrations.RemoveIsActiveFromCampaign.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>

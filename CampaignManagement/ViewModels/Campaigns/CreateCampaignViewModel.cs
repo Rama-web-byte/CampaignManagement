@@ -5,7 +5,7 @@ namespace CampaignManagement.ViewModels.Campaigns
     public class CreateCampaignViewModel
     {
         [Required(ErrorMessage ="CampaignName is required")]
-            public string CampaignsName { get; set; } // Name of the campaign
+            public string CampaignName { get; set; } // Name of the campaign
 
         [Required(ErrorMessage ="ProductID is required")]
             public Guid ProductId { get; set; }       // Selected product ID

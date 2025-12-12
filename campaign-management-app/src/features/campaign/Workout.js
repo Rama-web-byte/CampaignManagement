@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {getCampaigns} from '../Services/APIService';
+import {getCampaigns} from "../../Services/campaignService";
 import {Table,TableContainer,TableRow,TableCell,TableHead,TableBody}from '@mui/material';
 const WorkOut=()=>
 {

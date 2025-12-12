@@ -1,45 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import CreateCampaign from '../src/Components/AddCampaign'; // Import the CreateCampaign component
-import CampaignList from '../src/Components/CampaignList'; // Import the CampaignList component
-import WorkOut from '../src/Components/workout'; // Import the CampaignList component
-import LoginPage from './features/auth/LoginPage';
+import { BrowserRouter as Router, Route, Routes, Link ,Navigate} from 'react-router-dom';
+import CreateCampaign from '../src/features/campaign/AddCampaign'; // Import the CreateCampaign component
+import CampaignList from '../src/features/campaign/CampaignList'; // Import the CampaignList component
+import WorkOut from '../src/features/campaign/Workout'; // Import the CampaignList component
+import LoginPage from './features/auth/Login';
+import ViewCampaign from './features/campaign/ViewCampaign';
+import EditCampaign from './features/campaign/UpdateCampaign';
+import ProtectedRoute from './features/auth/ProtectedRoute';
 
 const App = () => {
   return (
     <Router>
       <div className="p-6">
-        <header className="mb-6">
-        <h1 className="text-3xl font-bold">Campaign Management</h1>
-        <nav className="mt-2">
-          <ul className="flex gap-4 list-none p-0">
-            <li>
-              <Link className="text-blue-600 hover:underline" to="/list">Campaign List</Link>
-              </li>
-            
-            <li>
-              <Link className="text-blue-600 hover:underline" to="/create-campaign">
-              Create Campaign
-              </Link>
-              </li>
-              <li>
-              <Link className="text-blue-600 hover:underline" to="/workout">
-              WorkOut
-              </Link>
-            </li>
-            <li>
-              <Link className="text-blue-600 hover:underlin" to="/login">
-              Login
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        </header>
         <Routes>
-          <Route path="/" element={<WorkOut/>} /> {/* Home Page */}
-          <Route path="/list" element={<CampaignList/>} /> {/* Home Page */}
-          <Route path="/create-campaign" element={<CreateCampaign />} /> {/* Create Campaign Page */}
+          <Route path="/" element={<Navigate to="/login" replace/>}/>
           <Route path="/login" element={<LoginPage/>}/>
+          <Route path="/workout" element={<ProtectedRoute><WorkOut/></ProtectedRoute>} /> 
+          <Route path="/campaigns" element={<ProtectedRoute><CampaignList/></ProtectedRoute>} /> 
+          <Route path="/create-campaign" element={<ProtectedRoute><CreateCampaign /></ProtectedRoute>} /> 
+          <Route path="/campaign/view/:id" element={<ProtectedRoute><ViewCampaign /></ProtectedRoute>}/>
+          <Route path="/campaign/edit/:id" element={<ProtectedRoute><EditCampaign/></ProtectedRoute>}></Route>
         </Routes>
       </div>
     </Router>

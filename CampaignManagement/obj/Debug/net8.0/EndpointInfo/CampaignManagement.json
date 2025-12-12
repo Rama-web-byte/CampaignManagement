@@ -750,14 +750,14 @@
       },
       "CreateCampaignViewModel": {
         "required": [
-          "campaignsName",
+          "campaignName",
           "endDate",
           "productId",
           "startDate"
         ],
         "type": "object",
         "properties": {
-          "campaignsName": {
+          "campaignName": {
             "minLength": 1,
             "type": "string"
           },

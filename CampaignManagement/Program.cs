@@ -51,6 +51,7 @@ builder.Services.AddScoped<ICampaignService, CampaignService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddSingleton<ITelemetryInitializer, JwtUserTelemetryInitializer>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(Mapping));
@@ -79,12 +80,13 @@ builder.Services.Configure<GzipCompressionProviderOptions>(options =>
 //CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigins",
+    options.AddPolicy("AllowAll",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000") // React frontend running locally
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+            //   policy.WithOrigins("http://localhost:3000") // React frontend running locally
+            policy.AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowAnyOrigin();
         });
 });
 
@@ -185,7 +187,7 @@ using(var scope=app.Services.CreateScope())
     DbSeeder.SeedUsers(dbContext);
 }
 
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowAll");
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

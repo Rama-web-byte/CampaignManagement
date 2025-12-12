@@ -8,18 +8,21 @@ namespace CampaignManagement.Telemetry
 {
     public class JwtUserTelemetryInitializer:ITelemetryInitializer
     {
-        private readonly IUserContext _userContext;
+        private readonly IServiceProvider _provider;
 
-        public JwtUserTelemetryInitializer(IUserContext   userContext)
+        public JwtUserTelemetryInitializer(IServiceProvider serviceProvider)
         {
-            _userContext = userContext;
+            _provider = serviceProvider;
         }
 
         public void Initialize(ITelemetry telemetry)
         {   
-            if( !string.IsNullOrEmpty(_userContext.UserId))
+            using var scope=_provider.CreateScope();
+            var userContext=scope.ServiceProvider.GetService<IUserContext>();
+
+            if( userContext!=null)
             {
-                telemetry.Context.User.AuthenticatedUserId= _userContext.UserId;
+                telemetry.Context.User.AuthenticatedUserId= userContext.UserId;
             }
         }
     }
