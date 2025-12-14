@@ -11,6 +11,7 @@ const CreateCampaign = () => {
   const [campaignName, setCampaignName] = useState("");
   const [productId, setProductId] = useState("");
   const [products, setProducts] = useState([]);
+
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -18,7 +19,11 @@ const CreateCampaign = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  // Fetch products when component mounts
+  const today = new Date();
+  const maxEndDate = new Date();
+  maxEndDate.setMonth(maxEndDate.getMonth() + 12);
+
+  // Load products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -35,12 +40,40 @@ const CreateCampaign = () => {
     fetchProducts();
   }, []);
 
-  const handleCreateCampaign = async () => {
+  // ------------------------------
+  // VALIDATION ON SUBMIT ONLY
+  // ------------------------------
+  const validateForm = () => {
     if (!campaignName || !productId || !startDate || !endDate) {
       setError("Please fill all fields.");
-      setSuccess(null);
-      return;
+      return false;
     }
+
+    const todaydate = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+    if (todaydate(startDate) < todaydate(today)) {
+      setError("Start Date cannot be in the past.");
+      return false;
+    }
+
+    if (endDate < startDate) {
+      setError("End Date cannot be before Start Date.");
+      return false;
+    }
+
+    if (endDate > maxEndDate) {
+      setError("End Date cannot be more than 12 months from today.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleCreateCampaign = async () => {
+    setError(null);
+    setSuccess(null);
+
+    if (!validateForm()) return;
 
     const campaignData = {
       campaignName,
@@ -51,28 +84,32 @@ const CreateCampaign = () => {
 
     try {
       const result = await createCampaign(campaignData);
-      setSuccess(`Campaign "${result.campaignName}" created successfully!`);
-      setError(null);
 
-      // Optionally, reset form
+      setSuccess(`Campaign "${result.campaignName}" created successfully!`);
+
+      // Reset UI
       setCampaignName("");
       setProductId("");
       setStartDate(null);
       setEndDate(null);
 
-      // Navigate back to campaign list after 1.5s
+      // Go back after 1.5 sec
       setTimeout(() => navigate("/campaigns"), 1500);
     } catch (err) {
-      setError(err.message);
-      setSuccess(null);
+      setError(err.message || "Failed to create campaign.");
     }
   };
 
   return (
     <Layout>
       <div className="max-w-xl mx-auto bg-white shadow-md p-6 rounded-lg">
+        
+        {/* HEADER */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Create New Campaign</h2>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Create New Campaign
+          </h2>
+
           <button
             onClick={() => navigate("/campaigns")}
             className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
@@ -81,6 +118,7 @@ const CreateCampaign = () => {
           </button>
         </div>
 
+        {/* MESSAGES */}
         {success && <p className="text-green-600 mb-3">{success}</p>}
         {error && <p className="text-red-600 mb-3">{error}</p>}
 
@@ -124,6 +162,7 @@ const CreateCampaign = () => {
           <label className="block text-gray-700">Start Date</label>
           <DatePicker
             selected={startDate}
+            minDate={today}
             onChange={(date) => setStartDate(date)}
             className="w-full p-2 border rounded mt-1"
             dateFormat="dd/MM/yyyy"
@@ -136,6 +175,8 @@ const CreateCampaign = () => {
           <label className="block text-gray-700">End Date</label>
           <DatePicker
             selected={endDate}
+            minDate={startDate || today}
+            maxDate={maxEndDate}
             onChange={(date) => setEndDate(date)}
             className="w-full p-2 border rounded mt-1"
             dateFormat="dd/MM/yyyy"
@@ -143,36 +184,32 @@ const CreateCampaign = () => {
           />
         </div>
 
-        {/* Create Button */}
-     
-  {/* Create Campaign */}
- <div className="flex justify-start gap-3 mt-6">
-  {/* Create Campaign */}
-  <button
-    onClick={handleCreateCampaign}
-    className="px-4 py-2 bg-amber-500 text-white font-semibold rounded hover:bg-amber-600 transition"
-  >
-    Create
-  </button>
+        {/* Buttons */}
+        <div className="flex justify-start gap-3 mt-6">
+          <button
+            onClick={handleCreateCampaign}
+            className="px-4 py-2 bg-amber-500 text-white font-semibold rounded hover:bg-amber-600 transition"
+          >
+            Create
+          </button>
 
-  {/* Discard Changes */}
-  <button
-    onClick={() => {
-      setCampaignName("");
-      setProductId("");
-      setStartDate(null);
-      setEndDate(null);
-    }}
-    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-  >
-    Discard
-  </button>
-</div>
+          <button
+            onClick={() => {
+              setCampaignName("");
+              setProductId("");
+              setStartDate(null);
+              setEndDate(null);
+            }}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+          >
+            Discard
+          </button>
+        </div>
 
-</div>
+      </div>
 
-  
-    </Layout>
+
+      </Layout>
   );
 };
 

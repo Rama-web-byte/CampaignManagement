@@ -22,10 +22,12 @@ const CampaignList = () => {
       console.error("Error fetching campaigns:", error);
     }
   };
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (!token) return;  // prevent firing too early
 
-  useEffect(() => {
-    fetchCampaigns(currentPage);
-  }, [currentPage]);
+  fetchCampaigns(currentPage);
+}, [currentPage]);
 
   const handlePageChange = (page) => setCurrentPage(page);
 
