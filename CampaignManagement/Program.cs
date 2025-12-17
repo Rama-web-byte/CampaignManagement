@@ -141,6 +141,8 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
+
+//Rate Limiting
 builder.Services.AddRateLimiter(options =>
 {
     //options.AddPolicy("LoginPolicy", context => RateLimitPartition.GetIpAddressLimiter
