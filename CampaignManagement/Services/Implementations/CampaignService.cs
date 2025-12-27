@@ -120,24 +120,47 @@ namespace CampaignManagement.Services.Implementations
         }
 
 
-        public async Task<bool> UpdateCampaignAsync(UpdateCampaignViewModel updateCampaign)
+        public async Task<(bool Success,string Message)> UpdateCampaignAsync(UpdateCampaignViewModel updateCampaign)
         {
-             var existingCampaign=await _campaignRepository.GetCampaignByIdAsync(updateCampaign.CampaignId);
-            if(existingCampaign == null)
+            var existingCampaign =
+                await _campaignRepository.GetCampaignByIdAsync(updateCampaign.CampaignId);
+
+            if (existingCampaign == null)
+                 return (false, "Campaign not found");
+            var today = DateTime.Today;
+
+            string status;
+            if (existingCampaign.EndDate < today)
+                status = "Expired";
+            else if (existingCampaign.StartDate <= today && existingCampaign.EndDate >= today)
+                status = "Ongoing";
+            else
+                status = "Future";
+
+            if ((status == "Ongoing" || status == "Expired") &&
+             updateCampaign.StartDate != existingCampaign.StartDate)
             {
-                return false;
+                return (false, "Cannot change Start Date for ongoing or expired campaigns");
             }
 
-           // existingCampaign.IsActive= updateCampaign.IsActive;
-            existingCampaign.StartDate = updateCampaign.StartDate;
+            if (status == "Ongoing" && updateCampaign.EndDate < today)
+            {
+                return (false, "End Date cannot be in the past for ongoing campaigns");
+            }
+            existingCampaign.CampaignName = updateCampaign.CampaignName;
             existingCampaign.EndDate = updateCampaign.EndDate;
-            existingCampaign.CampaignName= updateCampaign.CampaignName;
 
-         
+            if (status == "Future")
+            {
+                existingCampaign.StartDate = updateCampaign.StartDate;
+            }
+
             await _campaignRepository.UpdateCampaignAsync(existingCampaign);
             ClearAllCache();
-            return true;
+
+            return (true, null);
         }
+
 
         public async Task<bool> DeleteCampaignAsync(Guid id)
         {

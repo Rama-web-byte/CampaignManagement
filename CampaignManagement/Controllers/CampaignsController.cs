@@ -56,9 +56,9 @@ namespace CampaignManagement.Controllers
         {
             try
             {
-                var campaigns = _campaignService.GetAllCampaignsAsync(page, pageSize, isActive);
-                _telemetryClient.GetMetric("ListofCampaigns").TrackValue(campaigns.Result.Campaigns.Count);
-                return Ok(await _campaignService.GetAllCampaignsAsync(page, pageSize, isActive));
+                var campaigns = await _campaignService.GetAllCampaignsAsync(page, pageSize, isActive);
+                _telemetryClient.GetMetric("ListofCampaigns").TrackValue(campaigns.Campaigns.Count);
+                return Ok(campaigns);
             }
             catch (Exception ex)
             {
@@ -178,50 +178,58 @@ namespace CampaignManagement.Controllers
         [EnableRateLimiting("WritePolicy")]
         [Authorize(Roles = "Admin,CampaignOwner")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCampaign(Guid id, UpdateCampaignViewModel campaign)
+       public async Task<IActionResult> UpdateCampaign(Guid id, UpdateCampaignViewModel campaign)
+{
+    try
+    {
+        // ID mismatch
+        if (id != campaign.CampaignId)
         {
-            try
-            {
-                if (id != campaign.CampaignId)
-                {
-                    _logger.LogWarning($"ID mismatch in campaign update request: {id} != {campaign.CampaignId}");
-                    return BadRequest("Campaign ID mismatch");
-                }
-                if(!ModelState.IsValid)
-                {
-                    _logger.LogWarning(MessageConstants.InvalidModelState);
-                    return BadRequest();
-                }
-
-                var updated=await _campaignService.UpdateCampaignAsync(campaign);
-                if (!updated)
-                {
-                    _logger.LogWarning("Campaign with ID {CampaignId} not found",campaign.CampaignId);
-                    return NotFound($"Campaign with ID {campaign.CampaignId} not found.");
-                }
-                _logger.LogInformation("Campaign with ID {id} updated successfully.",campaign.CampaignId);
-                return NoContent();
-            }
-           catch(DbUpdateException ex)
-            {
-
-                _telemetryClient.TrackException(ex);
-                _logger.LogError(ex,"Error updating a campaign{id} by {userid}",campaign.CampaignId,_userContext.UserId);
-                return StatusCode(MessageConstants.InternalError, "An Unexpected DB error occured");
-            }
-            catch(InvalidOperationException ex)
-            {
-                _telemetryClient.TrackException(ex);
-                _logger.LogError(ex, "Error updating a campaign{id} by {userid}", campaign.CampaignId, _userContext.UserId);
-                return Conflict(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _telemetryClient.TrackException(ex);
-                _logger.LogError(ex, "Error updating a campaign{id} by {userid}", campaign.CampaignId, _userContext.UserId);
-                return StatusCode(MessageConstants.InternalError, "An Unexpected error occured");
-            }
+            _logger.LogWarning($"ID mismatch in campaign update request: {id} != {campaign.CampaignId}");
+            return BadRequest("Campaign ID mismatch");
         }
+
+        // Model validation
+        if (!ModelState.IsValid)
+        {
+            _logger.LogWarning("Invalid model state for campaign update request.");
+            return BadRequest(ModelState);
+        }
+
+        // Service layer handles business rules and returns success + message
+        var result = await _campaignService.UpdateCampaignAsync(campaign);
+
+        if (!result.Success)
+        {
+            // Determine reason
+            if (result.Message.Contains("not found"))
+            {
+                _logger.LogWarning("Campaign with ID {CampaignId} not found", campaign.CampaignId);
+                return NotFound(result.Message);
+            }
+
+            // Business rule violation
+            _logger.LogWarning("Business rule violation for campaign {CampaignId}: {Message}", campaign.CampaignId, result.Message);
+            return BadRequest(result.Message);
+        }
+
+        _logger.LogInformation("Campaign with ID {CampaignId} updated successfully.", campaign.CampaignId);
+        return NoContent();
+    }
+    catch (DbUpdateException ex)
+    {
+        _telemetryClient.TrackException(ex);
+        _logger.LogError(ex, "DB error updating campaign {CampaignId} by {UserId}", campaign.CampaignId, _userContext.UserId);
+        return StatusCode(MessageConstants.InternalError, "An unexpected DB error occurred");
+    }
+    catch (Exception ex)
+    {
+        _telemetryClient.TrackException(ex);
+        _logger.LogError(ex, "Unexpected error updating campaign {CampaignId} by {UserId}", campaign.CampaignId, _userContext.UserId);
+        return StatusCode(MessageConstants.InternalError, "An unexpected error occurred");
+    }
+}
+
 
         /// <summary>
         /// Deletes a campaign by its ID.

@@ -20,7 +20,7 @@ namespace CampaignManagement.Repositories.Implementations
         public async Task<IEnumerable<Campaign>> GetAllCampaignsAsync(int pageNo, int pageSize)
         {
             
-            var campaigns = await _context.Campaigns.Include(c => c.Product)
+            var campaigns = await _context.Campaigns.AsNoTracking().Include(c => c.Product)
                                                     .OrderBy(c=>c.StartDate)
                                                     .Skip((pageNo-1)*pageSize)
                                                     .Take(pageSize)
@@ -29,7 +29,7 @@ namespace CampaignManagement.Repositories.Implementations
         }
         public async Task<IEnumerable<Campaign>> GetActiveCampaignsAsync(int pageNo, int pageSize)
         {
-            var campaigns = await _context.Campaigns.Include(c => c.Product)
+            var campaigns = await _context.Campaigns.AsNoTracking().Include(c => c.Product)
                                                     .Where(c => c.StartDate<=DateTime.Now && c.EndDate>=DateTime.Now)  // Apply filter for active campaigns
                                                     .OrderBy(c=>c.StartDate)
                                                     .Skip((pageNo-1)*pageSize)
@@ -77,7 +77,7 @@ namespace CampaignManagement.Repositories.Implementations
 
         public async Task<int> GetAllCampaignsCountAsync(bool active)
         {
-            var query =  _context.Campaigns.AsQueryable();
+            var query =  _context.Campaigns.AsNoTracking().AsQueryable();
             if(active)
             query=query.Where(c=>c.StartDate<=DateTime.Now && c.EndDate>=DateTime.Now);
            return  await query.CountAsync();
