@@ -1,4 +1,4 @@
-using CampaignManagement.Data;
+﻿using CampaignManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using CampaignManagement.Mapper;
 using CampaignManagement.Repositories.Contracts;
@@ -12,89 +12,77 @@ using CampaignManagement.Validator;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using CampaignManagement.Models;
-using System.IO;
 using Microsoft.AspNetCore.ResponseCompression;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
-using Azure.Monitor.OpenTelemetry.Exporter;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
-using OpenTelemetry.Metrics;
-using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 using CampaignManagement.Telemetry;
-using CampaignManagement.Middleware;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
 DotNetEnv.Env.Load();
-//Application Insights
 
-builder.Services.AddOpenTelemetry().UseAzureMonitor
-    (options=>
-    { options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
-    });
+#region Telemetry
+builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
+{
+    options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
+});
 
-//DB
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddSingleton<ITelemetryInitializer, JwtUserTelemetryInitializer>();
+#endregion
+
+#region DB
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-//var connectionString = builder.Configuration.GetConnectionString("DB_CONNECTION_STRING");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddValidatorsFromAssemblyContaining<CampaignValidator>();
-builder.Services.AddScoped<IValidator<User>,UserValidator>();
-builder.Services.AddFluentValidationAutoValidation();
+#endregion
 
-//Register DI
+#region Validation
+builder.Services.AddValidatorsFromAssemblyContaining<CampaignValidator>();
+builder.Services.AddScoped<IValidator<User>, UserValidator>();
+builder.Services.AddFluentValidationAutoValidation();
+#endregion
+
+#region DI
 builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
 builder.Services.AddScoped<ICampaignService, CampaignService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserContext, UserContext>();
-builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddSingleton<ITelemetryInitializer, JwtUserTelemetryInitializer>();
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+#endregion
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(Mapping));
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 
-//
-builder.Services.AddResponseCompression(option =>
+#region Compression
+builder.Services.AddResponseCompression(options =>
 {
-    option.EnableForHttps = true;
-    option.Providers.Add<BrotliCompressionProvider>();
-    option.Providers.Add<GzipCompressionProvider>();
+    options.EnableForHttps = true;
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
 });
+#endregion
 
-builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
-{
-    options.Level = System.IO.Compression.CompressionLevel.Optimal;
-});
-
-builder.Services.Configure<GzipCompressionProviderOptions>(options =>
-{
-    options.Level = System.IO.Compression.CompressionLevel.Optimal;
-
-});
-
-//CORS
+#region CORS (DEV ONLY)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        policy =>
-        {
-            //   policy.WithOrigins("http://localhost:3000") // React frontend running locally
-            policy.AllowAnyHeader()
+    options.AddPolicy("DevCors", policy =>
+    {
+        policy.AllowAnyHeader()
               .AllowAnyMethod()
               .AllowAnyOrigin();
-        });
+    });
 });
+#endregion
 
-//Swagger
-
+#region Swagger
 builder.Services.AddEndpointsApiExplorer();
-
-// Make swagger to remember the jwt auth
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -105,28 +93,26 @@ builder.Services.AddSwaggerGen(c =>
         Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
     });
 
-    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement {
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
     {
-        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
         {
-            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
             {
-                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                Id = "Bearer"
-            }
-        },
-        new string[] {}
-    }});
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
 });
+#endregion
 
-//JWT Authentication
+#region JWT
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings["Key"];
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -137,75 +123,69 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-        ClockSkew = TimeSpan.Zero
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(jwtSettings["Key"])),
+        ClockSkew = TimeSpan.FromMinutes(2)
     };
 });
+#endregion
 
-//Rate Limiting
+#region Rate Limiting (APIs ONLY)
 builder.Services.AddRateLimiter(options =>
 {
-    //options.AddPolicy("LoginPolicy", context => RateLimitPartition.GetIpAddressLimiter
-    //(context, ip =>
-    //new FixedWindowRateLimiterOptions
-    //{
-    //    PermitLimit = 5,
-    //    Window = TimeSpan.FromMinutes(1),
-    //    QueueLimit = 0,
-    //    QueueProcessingOrder = QueueProcessingOrder.OldestFirst
-    //}));
-    options.GlobalLimiter=PartitionedRateLimiter.Create<HttpContext,string>(context=>
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
     {
         var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
 
+        return RateLimitPartition.GetTokenBucketLimiter(userId, _ =>
+            new TokenBucketRateLimiterOptions
+            {
+                TokenLimit = 100,
+                TokensPerPeriod = 100,
+                ReplenishmentPeriod = TimeSpan.FromMinutes(1),
+                QueueLimit = 0
+            });
+    });
 
-        return RateLimitPartition.GetTokenBucketLimiter(userId, _ => new TokenBucketRateLimiterOptions
-        {
-            TokenLimit = 100,
-            TokensPerPeriod = 100,
-            ReplenishmentPeriod = TimeSpan.FromMinutes(1),
-            QueueLimit = 0,
-            QueueProcessingOrder = QueueProcessingOrder.OldestFirst
-        });
-    });
-    options.AddPolicy("WritePolicy", context =>
-    {
-        var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
-        return RateLimitPartition.GetFixedWindowLimiter(userId, _ => new FixedWindowRateLimiterOptions
-        {
-            PermitLimit=20,
-            Window = TimeSpan.FromMinutes(1),
-            QueueLimit = 0,
-            QueueProcessingOrder= QueueProcessingOrder.OldestFirst
-        });
-    });
     options.RejectionStatusCode = 429;
 });
+#endregion
+
 var app = builder.Build();
 
-using(var scope=app.Services.CreateScope())
+#region DB Seed
+using (var scope = app.Services.CreateScope())
 {
-    var dbContext=scope.ServiceProvider.GetService<AppDbContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     DbSeeder.SeedUsers(dbContext);
 }
+#endregion
 
-app.UseCors("AllowAll");
+// ================= MIDDLEWARE PIPELINE =================
+
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("DevCors");
+
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Campaign Management API v1");
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseResponseCompression();
 app.UseHttpsRedirection();
-app.UseMiddleware<JWTUserMiddleware>();
+
+/* ✅ SERVE REACT */
+app.UseDefaultFiles();   // index.html
+app.UseStaticFiles();    // js/css/assets
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseRateLimiter();
+
+/* APIs */
 app.MapControllers();
 
+/* ✅ REACT ROUTER FALLBACK */
+app.MapFallbackToFile("index.html");
 
 app.Run();

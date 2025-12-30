@@ -1,12 +1,1464 @@
 {
   "Version": 1,
-  "Hash": "3kZBDqNtH6dKxrRoer+yBMDFqJApDZ9Wnk4PGcJhic4=",
+  "Hash": "WJpi3ikB8TsOFEYy1lqrqMfNiODqf07uPvyd306yjAI=",
   "Source": "CampaignManagement",
   "BasePath": "_content/CampaignManagement",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "CampaignManagement\\wwwroot",
+      "Source": "CampaignManagement",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\asset-manifest.json",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "asset-manifest#[.{fingerprint}]?.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "7s786gh9e9",
+      "Integrity": "mdDTe9jMm17faIQhflxJX64LrQodbxAp+ih98bGQa18=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\asset-manifest.json"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\favicon.ico",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "favicon#[.{fingerprint}]?.ico",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "1f2oqlqaa3",
+      "Integrity": "PRD32mxgMXg0AIFmjErFs66XQ8qaJiqw/NMS+7n0i90=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\index.html",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "index#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "zgnxj4x8cd",
+      "Integrity": "7XcD5XUlJzue80pIe6er2je9T+5wehJCd7MicVvBH/g=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\logo192.png",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "logo192#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "xr54by9dn2",
+      "Integrity": "w4Y5bscNs2CAdbX7+qxKscyqhroFpoqzk+xVHrZsPgA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\logo192.png"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\logo512.png",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "logo512#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "2377xp85ga",
+      "Integrity": "nqT02nBQwMxAiSb2o5wlNiTpursdQ8eXfNghRFpgtGE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\logo512.png"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\manifest.json",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "manifest#[.{fingerprint}]?.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "4bysstsvp2",
+      "Integrity": "ULPYw5A68/eNhxuUVXqxT045yhkurKPSz6hjyGcnmhQ=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\manifest.json"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\robots.txt",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "robots#[.{fingerprint}]?.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "sl60c43r8o",
+      "Integrity": "kNJLw79pisHhc3OVAimMzKcq3x9WT6sF9IS4xI0crdI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\robots.txt"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\css\\main.fb5f11a1.css",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "static/css/main.fb5f11a1#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "t67uwoitnz",
+      "Integrity": "5V94imtef9hnFWYU8oKB3NR40jO6f/SxzoBvcKUOI18=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\static\\css\\main.fb5f11a1.css"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\css\\main.fb5f11a1.css.map",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "static/css/main.fb5f11a1.css#[.{fingerprint}]?.map",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "rncb0mfz9y",
+      "Integrity": "KSNYRSe9/3WGKCOPHKpod+0Om/SWwSJRPZ9tf/M9J4A=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\static\\css\\main.fb5f11a1.css.map"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\453.5fa3f46d.chunk.js",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "static/js/453.5fa3f46d.chunk#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "uizkpob4g2",
+      "Integrity": "KkaqL+Z78m2cxQPRiaaH/ftwRe95gyF3p+SdgRlhcY0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\static\\js\\453.5fa3f46d.chunk.js"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\453.5fa3f46d.chunk.js.map",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "static/js/453.5fa3f46d.chunk.js#[.{fingerprint}]?.map",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wc19qvda5r",
+      "Integrity": "4Aqyr4FHiv6JlTzcfUJqu7BU9sAIo7hG0um3JTTto8U=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\static\\js\\453.5fa3f46d.chunk.js.map"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "static/js/main.4b36e0d8#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "680cv6jgnd",
+      "Integrity": "JhPwR3Laz/FM+4BSiPdBbbh0W2Y2BXmverloS0Jzkhc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\static\\js\\main.4b36e0d8.js"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js.LICENSE.txt",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "static/js/main.4b36e0d8.js.LICENSE#[.{fingerprint}]?.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "k5qfd20t28",
+      "Integrity": "2BhzGIYJWT3jHYW+h09ZCW3BvxjquyMD2wluBpQRb4c=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\static\\js\\main.4b36e0d8.js.LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js.map",
+      "SourceId": "CampaignManagement",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\",
+      "BasePath": "_content/CampaignManagement",
+      "RelativePath": "static/js/main.4b36e0d8.js#[.{fingerprint}]?.map",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "vungt8xxvu",
+      "Integrity": "OXap54j4VEHyZGDNejvfspewMkiIw1H6Zky5nV7bR8U=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\static\\js\\main.4b36e0d8.js.map"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "asset-manifest.7s786gh9e9.json",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\asset-manifest.json",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "517"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mdDTe9jMm17faIQhflxJX64LrQodbxAp+ih98bGQa18=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "7s786gh9e9"
+        },
+        {
+          "Name": "label",
+          "Value": "asset-manifest.json"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mdDTe9jMm17faIQhflxJX64LrQodbxAp+ih98bGQa18="
+        }
+      ]
+    },
+    {
+      "Route": "asset-manifest.json",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\asset-manifest.json",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "517"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mdDTe9jMm17faIQhflxJX64LrQodbxAp+ih98bGQa18=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-mdDTe9jMm17faIQhflxJX64LrQodbxAp+ih98bGQa18="
+        }
+      ]
+    },
+    {
+      "Route": "favicon.1f2oqlqaa3.ico",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\favicon.ico",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3870"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/x-icon"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PRD32mxgMXg0AIFmjErFs66XQ8qaJiqw/NMS+7n0i90=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:12:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "1f2oqlqaa3"
+        },
+        {
+          "Name": "label",
+          "Value": "favicon.ico"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-PRD32mxgMXg0AIFmjErFs66XQ8qaJiqw/NMS+7n0i90="
+        }
+      ]
+    },
+    {
+      "Route": "favicon.ico",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\favicon.ico",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3870"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/x-icon"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"PRD32mxgMXg0AIFmjErFs66XQ8qaJiqw/NMS+7n0i90=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:12:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-PRD32mxgMXg0AIFmjErFs66XQ8qaJiqw/NMS+7n0i90="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "644"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7XcD5XUlJzue80pIe6er2je9T+5wehJCd7MicVvBH/g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-7XcD5XUlJzue80pIe6er2je9T+5wehJCd7MicVvBH/g="
+        }
+      ]
+    },
+    {
+      "Route": "index.zgnxj4x8cd.html",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "644"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"7XcD5XUlJzue80pIe6er2je9T+5wehJCd7MicVvBH/g=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "zgnxj4x8cd"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-7XcD5XUlJzue80pIe6er2je9T+5wehJCd7MicVvBH/g="
+        }
+      ]
+    },
+    {
+      "Route": "logo192.png",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\logo192.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5347"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"w4Y5bscNs2CAdbX7+qxKscyqhroFpoqzk+xVHrZsPgA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:13:24 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-w4Y5bscNs2CAdbX7+qxKscyqhroFpoqzk+xVHrZsPgA="
+        }
+      ]
+    },
+    {
+      "Route": "logo192.xr54by9dn2.png",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\logo192.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5347"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"w4Y5bscNs2CAdbX7+qxKscyqhroFpoqzk+xVHrZsPgA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:13:24 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "xr54by9dn2"
+        },
+        {
+          "Name": "label",
+          "Value": "logo192.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-w4Y5bscNs2CAdbX7+qxKscyqhroFpoqzk+xVHrZsPgA="
+        }
+      ]
+    },
+    {
+      "Route": "logo512.2377xp85ga.png",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\logo512.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9664"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"nqT02nBQwMxAiSb2o5wlNiTpursdQ8eXfNghRFpgtGE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:13:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2377xp85ga"
+        },
+        {
+          "Name": "label",
+          "Value": "logo512.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-nqT02nBQwMxAiSb2o5wlNiTpursdQ8eXfNghRFpgtGE="
+        }
+      ]
+    },
+    {
+      "Route": "logo512.png",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\logo512.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9664"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"nqT02nBQwMxAiSb2o5wlNiTpursdQ8eXfNghRFpgtGE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:13:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-nqT02nBQwMxAiSb2o5wlNiTpursdQ8eXfNghRFpgtGE="
+        }
+      ]
+    },
+    {
+      "Route": "manifest.4bysstsvp2.json",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\manifest.json",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "492"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ULPYw5A68/eNhxuUVXqxT045yhkurKPSz6hjyGcnmhQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:13:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4bysstsvp2"
+        },
+        {
+          "Name": "label",
+          "Value": "manifest.json"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ULPYw5A68/eNhxuUVXqxT045yhkurKPSz6hjyGcnmhQ="
+        }
+      ]
+    },
+    {
+      "Route": "manifest.json",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\manifest.json",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "492"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ULPYw5A68/eNhxuUVXqxT045yhkurKPSz6hjyGcnmhQ=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:13:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ULPYw5A68/eNhxuUVXqxT045yhkurKPSz6hjyGcnmhQ="
+        }
+      ]
+    },
+    {
+      "Route": "robots.sl60c43r8o.txt",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\robots.txt",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "67"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"kNJLw79pisHhc3OVAimMzKcq3x9WT6sF9IS4xI0crdI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:13:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "sl60c43r8o"
+        },
+        {
+          "Name": "label",
+          "Value": "robots.txt"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-kNJLw79pisHhc3OVAimMzKcq3x9WT6sF9IS4xI0crdI="
+        }
+      ]
+    },
+    {
+      "Route": "robots.txt",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\robots.txt",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "67"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"kNJLw79pisHhc3OVAimMzKcq3x9WT6sF9IS4xI0crdI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Oct 2024 13:13:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-kNJLw79pisHhc3OVAimMzKcq3x9WT6sF9IS4xI0crdI="
+        }
+      ]
+    },
+    {
+      "Route": "static/css/main.fb5f11a1.css",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\css\\main.fb5f11a1.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "42086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5V94imtef9hnFWYU8oKB3NR40jO6f/SxzoBvcKUOI18=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-5V94imtef9hnFWYU8oKB3NR40jO6f/SxzoBvcKUOI18="
+        }
+      ]
+    },
+    {
+      "Route": "static/css/main.fb5f11a1.css.map",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\css\\main.fb5f11a1.css.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "36722"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KSNYRSe9/3WGKCOPHKpod+0Om/SWwSJRPZ9tf/M9J4A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-KSNYRSe9/3WGKCOPHKpod+0Om/SWwSJRPZ9tf/M9J4A="
+        }
+      ]
+    },
+    {
+      "Route": "static/css/main.fb5f11a1.css.rncb0mfz9y.map",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\css\\main.fb5f11a1.css.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "36722"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KSNYRSe9/3WGKCOPHKpod+0Om/SWwSJRPZ9tf/M9J4A=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "rncb0mfz9y"
+        },
+        {
+          "Name": "label",
+          "Value": "static/css/main.fb5f11a1.css.map"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-KSNYRSe9/3WGKCOPHKpod+0Om/SWwSJRPZ9tf/M9J4A="
+        }
+      ]
+    },
+    {
+      "Route": "static/css/main.fb5f11a1.t67uwoitnz.css",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\css\\main.fb5f11a1.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "42086"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"5V94imtef9hnFWYU8oKB3NR40jO6f/SxzoBvcKUOI18=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "t67uwoitnz"
+        },
+        {
+          "Name": "label",
+          "Value": "static/css/main.fb5f11a1.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-5V94imtef9hnFWYU8oKB3NR40jO6f/SxzoBvcKUOI18="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/453.5fa3f46d.chunk.js",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\453.5fa3f46d.chunk.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4547"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KkaqL+Z78m2cxQPRiaaH/ftwRe95gyF3p+SdgRlhcY0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-KkaqL+Z78m2cxQPRiaaH/ftwRe95gyF3p+SdgRlhcY0="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/453.5fa3f46d.chunk.js.map",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\453.5fa3f46d.chunk.js.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10597"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4Aqyr4FHiv6JlTzcfUJqu7BU9sAIo7hG0um3JTTto8U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4Aqyr4FHiv6JlTzcfUJqu7BU9sAIo7hG0um3JTTto8U="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/453.5fa3f46d.chunk.js.wc19qvda5r.map",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\453.5fa3f46d.chunk.js.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10597"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4Aqyr4FHiv6JlTzcfUJqu7BU9sAIo7hG0um3JTTto8U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wc19qvda5r"
+        },
+        {
+          "Name": "label",
+          "Value": "static/js/453.5fa3f46d.chunk.js.map"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4Aqyr4FHiv6JlTzcfUJqu7BU9sAIo7hG0um3JTTto8U="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/453.5fa3f46d.chunk.uizkpob4g2.js",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\453.5fa3f46d.chunk.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4547"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"KkaqL+Z78m2cxQPRiaaH/ftwRe95gyF3p+SdgRlhcY0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "uizkpob4g2"
+        },
+        {
+          "Name": "label",
+          "Value": "static/js/453.5fa3f46d.chunk.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-KkaqL+Z78m2cxQPRiaaH/ftwRe95gyF3p+SdgRlhcY0="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/main.4b36e0d8.680cv6jgnd.js",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "999018"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JhPwR3Laz/FM+4BSiPdBbbh0W2Y2BXmverloS0Jzkhc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "680cv6jgnd"
+        },
+        {
+          "Name": "label",
+          "Value": "static/js/main.4b36e0d8.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-JhPwR3Laz/FM+4BSiPdBbbh0W2Y2BXmverloS0Jzkhc="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/main.4b36e0d8.js",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "999018"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"JhPwR3Laz/FM+4BSiPdBbbh0W2Y2BXmverloS0Jzkhc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-JhPwR3Laz/FM+4BSiPdBbbh0W2Y2BXmverloS0Jzkhc="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/main.4b36e0d8.js.LICENSE.k5qfd20t28.txt",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js.LICENSE.txt",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3249"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"2BhzGIYJWT3jHYW+h09ZCW3BvxjquyMD2wluBpQRb4c=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "k5qfd20t28"
+        },
+        {
+          "Name": "label",
+          "Value": "static/js/main.4b36e0d8.js.LICENSE.txt"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-2BhzGIYJWT3jHYW+h09ZCW3BvxjquyMD2wluBpQRb4c="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/main.4b36e0d8.js.LICENSE.txt",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js.LICENSE.txt",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3249"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"2BhzGIYJWT3jHYW+h09ZCW3BvxjquyMD2wluBpQRb4c=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-2BhzGIYJWT3jHYW+h09ZCW3BvxjquyMD2wluBpQRb4c="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/main.4b36e0d8.js.map",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4727237"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OXap54j4VEHyZGDNejvfspewMkiIw1H6Zky5nV7bR8U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-OXap54j4VEHyZGDNejvfspewMkiIw1H6Zky5nV7bR8U="
+        }
+      ]
+    },
+    {
+      "Route": "static/js/main.4b36e0d8.js.vungt8xxvu.map",
+      "AssetFile": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js.map",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4727237"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/plain"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"OXap54j4VEHyZGDNejvfspewMkiIw1H6Zky5nV7bR8U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 30 Dec 2025 11:41:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vungt8xxvu"
+        },
+        {
+          "Name": "label",
+          "Value": "static/js/main.4b36e0d8.js.map"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-OXap54j4VEHyZGDNejvfspewMkiIw1H6Zky5nV7bR8U="
+        }
+      ]
+    }
+  ]
 }

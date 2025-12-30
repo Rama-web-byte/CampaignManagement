@@ -1,0 +1,81 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\asset-manifest.json",
+      "PackagePath": "staticwebassets\\asset-manifest.json"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\logo192.png",
+      "PackagePath": "staticwebassets\\logo192.png"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\logo512.png",
+      "PackagePath": "staticwebassets\\logo512.png"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\manifest.json",
+      "PackagePath": "staticwebassets\\manifest.json"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\robots.txt",
+      "PackagePath": "staticwebassets\\robots.txt"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\css\\main.fb5f11a1.css",
+      "PackagePath": "staticwebassets\\static\\css\\main.fb5f11a1.css"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\css\\main.fb5f11a1.css.map",
+      "PackagePath": "staticwebassets\\static\\css\\main.fb5f11a1.css.map"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\453.5fa3f46d.chunk.js",
+      "PackagePath": "staticwebassets\\static\\js\\453.5fa3f46d.chunk.js"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\453.5fa3f46d.chunk.js.map",
+      "PackagePath": "staticwebassets\\static\\js\\453.5fa3f46d.chunk.js.map"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js",
+      "PackagePath": "staticwebassets\\static\\js\\main.4b36e0d8.js"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js.LICENSE.txt",
+      "PackagePath": "staticwebassets\\static\\js\\main.4b36e0d8.js.LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\ramth\\source\\GIT Local Repo\\GIT Local Repo\\CampaignManagement\\CampaignManagement\\wwwroot\\static\\js\\main.4b36e0d8.js.map",
+      "PackagePath": "staticwebassets\\static\\js\\main.4b36e0d8.js.map"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.CampaignManagement.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.CampaignManagement.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.CampaignManagement.props",
+      "PackagePath": "build\\CampaignManagement.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.CampaignManagement.props",
+      "PackagePath": "buildMultiTargeting\\CampaignManagement.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.CampaignManagement.props",
+      "PackagePath": "buildTransitive\\CampaignManagement.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

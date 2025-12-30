@@ -32,4 +32,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\static\js\" />
+    <Folder Include="wwwroot\static\css\" />
+  </ItemGroup>
+
 </Project>

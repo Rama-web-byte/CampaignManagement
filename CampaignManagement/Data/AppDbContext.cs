@@ -5,7 +5,7 @@ using System.Reflection.Emit;
 
 namespace CampaignManagement.Data
 {
-   
+
 
     public class AppDbContext : DbContext
     {
@@ -15,10 +15,21 @@ namespace CampaignManagement.Data
         public DbSet<Product> Products { get; set; }
 
         public DbSet<User> Users { get; set; }
-        
+
+        public DbSet<CampaignStatusSummary> CampaignStatusSummaries { get; set; }
+
+        public DbSet<CampaignsByProduct> CampaignsByProduct { get;set;}
 
 
-       
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CampaignStatusSummary>().HasNoKey().ToView("vw_CampaignStatusSummary");
+            modelBuilder.Entity<CampaignsByProduct>().HasNoKey().ToView("vw_CampaignsByProduct");
+        }
+
+
+
+
     }
 
 }

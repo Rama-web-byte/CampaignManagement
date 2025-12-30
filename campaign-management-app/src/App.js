@@ -7,6 +7,7 @@ import LoginPage from './features/auth/Login';
 import ViewCampaign from './features/campaign/ViewCampaign';
 import EditCampaign from './features/campaign/UpdateCampaign';
 import ProtectedRoute from './features/auth/ProtectedRoute';
+import Dashboard from "./features/dashboard/Dashboard";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/create-campaign" element={<ProtectedRoute><CreateCampaign /></ProtectedRoute>} /> 
           <Route path="/campaign/view/:id" element={<ProtectedRoute><ViewCampaign /></ProtectedRoute>}/>
           <Route path="/campaign/edit/:id" element={<ProtectedRoute><EditCampaign/></ProtectedRoute>}></Route>
+           <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}></Route>
         </Routes>
       </div>
     </Router>

@@ -145,6 +145,26 @@
     ]
   },
   {
+    "ContainingType": "CampaignManagement.Controllers.DashboardController",
+    "Method": "GetCampaignProducts",
+    "RelativePath": "api/Dashboard/GetCampaignProducts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CampaignManagement.Controllers.DashboardController",
+    "Method": "GetCampaignsStatusReportAsync",
+    "RelativePath": "api/Dashboard/GetCampaignStatus",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CampaignManagement.Controllers.UserController",
     "Method": "GetAllUsers",
     "RelativePath": "api/User",
