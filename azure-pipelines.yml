@@ -84,7 +84,7 @@ stages:
             artifact: drop
           - task: AzureWebApp@1
             inputs:
-              azureSubscription: '<Your Azure Subscription>'  # replace with your service connection
+              azureSubscription: 'CampaignManagement-Deploy'  # replace with your service connection
               appType: 'webApp'
               appName: 'ram-campaignapp'                        # your Azure App Service name
               package: '$(Pipeline.Workspace)/drop/backend'
