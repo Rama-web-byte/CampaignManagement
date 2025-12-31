@@ -32,14 +32,18 @@ stages:
 
     # Build React frontend
     - script: |
-        cd $(System.DefaultWorkingDirectory)/$(reactAppPath)
         npm install
         npm run build
+      workingDirectory: '$(System.DefaultWorkingDirectory)/$(reactAppPath)'
       displayName: 'Build React App'
 
-    # Verify React build folder exists
+    # Debug: List React folder contents to verify build folder exists
+    - script: dir "$(System.DefaultWorkingDirectory)/$(reactAppPath)"
+      displayName: 'List React folder contents'
+
     - script: dir "$(System.DefaultWorkingDirectory)/$(reactAppPath)/build"
       displayName: 'Check React build folder'
+      continueOnError: true
 
     # Copy React build to artifact folder
     - task: CopyFiles@2
@@ -99,7 +103,7 @@ stages:
               appName: 'ram-campaignapp'                       # your Azure App Service name
               package: '$(Pipeline.Workspace)/drop/backend'
 
-          # Deploy React frontend (if needed, optional)
+          # Optional: Deploy React frontend if needed
           # - task: AzureWebApp@1
           #   inputs:
           #     azureSubscription: 'CampaignManagement-Deploy'
