@@ -4,12 +4,12 @@ trigger:
       - main  # replace with your main branch if different
 
 pool:
-  name: MyPCAgent   # your self-hosted agent pool
+  name: MyPCAgent
 
 variables:
   buildConfiguration: 'Release'
-  reactAppPath: 'campaign-management-app'   # React frontend folder
-  backendPath: 'CampaignManagement'        # .NET backend folder
+  reactAppPath: 'campaign-management-app' # React frontend folder in repo
+  backendPath: 'CampaignManagement'       # .NET backend folder in repo
 
 stages:
 
@@ -21,14 +21,11 @@ stages:
     displayName: 'Build React + .NET'
     steps:
 
-    # Checkout the repository
-    - checkout: self
-
-    # Install Node.js
+    # Install Node.js 18 for pipeline
     - task: NodeTool@0
       inputs:
         versionSpec: '18.x'
-      displayName: 'Install Node.js'
+      displayName: 'Install Node.js 18'
 
     # Build React frontend
     - script: |
@@ -37,18 +34,20 @@ stages:
       workingDirectory: '$(System.DefaultWorkingDirectory)/$(reactAppPath)'
       displayName: 'Build React App'
 
-    # Debug: List React folder contents to verify build folder exists
-    - script: dir "$(System.DefaultWorkingDirectory)/$(reactAppPath)"
-      displayName: 'List React folder contents'
-
-    - script: dir "$(System.DefaultWorkingDirectory)/$(reactAppPath)/build"
+    # Check if build folder exists
+    - script: |
+        if exist "$(System.DefaultWorkingDirectory)/$(reactAppPath)/build" (
+          echo "React build succeeded."
+        ) else (
+          echo "React build FAILED — build folder not found!"
+          exit 1
+        )
       displayName: 'Check React build folder'
-      continueOnError: true
 
     # Copy React build to artifact folder
     - task: CopyFiles@2
       inputs:
-        SourceFolder: '$(System.DefaultWorkingDirectory)/$(reactAppPath)/build'
+        SourceFolder: '$(reactAppPath)/build'
         Contents: '**'
         TargetFolder: '$(Build.ArtifactStagingDirectory)/wwwroot'
       displayName: 'Copy React build to artifact'
@@ -91,22 +90,11 @@ stages:
       runOnce:
         deploy:
           steps:
-          # Download artifacts from build stage
           - download: current
             artifact: drop
-
-          # Deploy backend folder to Azure App Service
           - task: AzureWebApp@1
             inputs:
               azureSubscription: 'CampaignManagement-Deploy'  # your service connection
               appType: 'webApp'
-              appName: 'ram-campaignapp'                       # your Azure App Service name
+              appName: 'ram-campaignapp'                        # your Azure App Service name
               package: '$(Pipeline.Workspace)/drop/backend'
-
-          # Optional: Deploy React frontend if needed
-          # - task: AzureWebApp@1
-          #   inputs:
-          #     azureSubscription: 'CampaignManagement-Deploy'
-          #     appType: 'webApp'
-          #     appName: 'ram-campaignapp'
-          #     package: '$(Pipeline.Workspace)/drop/wwwroot'
