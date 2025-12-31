@@ -4,12 +4,12 @@ trigger:
       - main  # replace with your main branch if different
 
 pool:
- name: MyPCAgent
+  name: MyPCAgent   # your self-hosted agent pool
 
 variables:
   buildConfiguration: 'Release'
-  reactAppPath: 'campaign-management-app' # React frontend folder in repo
-  backendPath: 'CampaignManagement'       # .NET backend folder in repo
+  reactAppPath: 'campaign-management-app'   # React frontend folder
+  backendPath: 'CampaignManagement'        # .NET backend folder
 
 stages:
 
@@ -21,6 +21,9 @@ stages:
     displayName: 'Build React + .NET'
     steps:
 
+    # Checkout the repository
+    - checkout: self
+
     # Install Node.js
     - task: NodeTool@0
       inputs:
@@ -29,15 +32,19 @@ stages:
 
     # Build React frontend
     - script: |
-        cd $(reactAppPath)
+        cd $(System.DefaultWorkingDirectory)/$(reactAppPath)
         npm install
         npm run build
       displayName: 'Build React App'
 
+    # Verify React build folder exists
+    - script: dir "$(System.DefaultWorkingDirectory)/$(reactAppPath)/build"
+      displayName: 'Check React build folder'
+
     # Copy React build to artifact folder
     - task: CopyFiles@2
       inputs:
-        SourceFolder: '$(reactAppPath)/build'
+        SourceFolder: '$(System.DefaultWorkingDirectory)/$(reactAppPath)/build'
         Contents: '**'
         TargetFolder: '$(Build.ArtifactStagingDirectory)/wwwroot'
       displayName: 'Copy React build to artifact'
@@ -80,12 +87,22 @@ stages:
       runOnce:
         deploy:
           steps:
+          # Download artifacts from build stage
           - download: current
             artifact: drop
+
+          # Deploy backend folder to Azure App Service
           - task: AzureWebApp@1
             inputs:
-              azureSubscription: 'CampaignManagement-Deploy'  # replace with your service connection
+              azureSubscription: 'CampaignManagement-Deploy'  # your service connection
               appType: 'webApp'
-              appName: 'ram-campaignapp'                        # your Azure App Service name
+              appName: 'ram-campaignapp'                       # your Azure App Service name
               package: '$(Pipeline.Workspace)/drop/backend'
 
+          # Deploy React frontend (if needed, optional)
+          # - task: AzureWebApp@1
+          #   inputs:
+          #     azureSubscription: 'CampaignManagement-Deploy'
+          #     appType: 'webApp'
+          #     appName: 'ram-campaignapp'
+          #     package: '$(Pipeline.Workspace)/drop/wwwroot'
