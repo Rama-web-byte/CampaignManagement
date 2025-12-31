@@ -1,100 +1,35 @@
 trigger:
-  branches:
-    include:
-      - main  # replace with your main branch if different
+- main
 
 pool:
-  name: MyPCAgent
+  vmImage: 'windows-latest'
 
-variables:
-  buildConfiguration: 'Release'
-  reactAppPath: 'campaign-management-app' # React frontend folder in repo
-  backendPath: 'CampaignManagement'       # .NET backend folder in repo
+steps:
+# Checkout repo
+- task: Checkout@1
+  displayName: 'Checkout code'
 
-stages:
+# Install Node.js 18
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js 18'
 
-# ---------------- Build Stage ----------------
-- stage: Build
-  displayName: 'Build Stage'
-  jobs:
-  - job: Build
-    displayName: 'Build React + .NET'
-    steps:
+# Build React App
+- script: |
+    npm install
+    npm run build --verbose
+  workingDirectory: '$(System.DefaultWorkingDirectory)/campaign-management-app'
+  displayName: 'Build React App'
 
-    # Install Node.js 18 for pipeline
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '18.x'
-      displayName: 'Install Node.js 18'
+# Debug: Check build folder
+- script: dir "$(System.DefaultWorkingDirectory)/campaign-management-app/build"
+  displayName: 'Debug React build folder'
 
-    # Build React frontend
-    - script: |
-        npm install
-        npm run build
-      workingDirectory: '$(System.DefaultWorkingDirectory)/$(reactAppPath)'
-      displayName: 'Build React App'
-
-    # Check if build folder exists
-    - script: |
-        if exist "$(System.DefaultWorkingDirectory)/$(reactAppPath)/build" (
-          echo "React build succeeded."
-        ) else (
-          echo "React build FAILED — build folder not found!"
-          exit 1
-        )
-      displayName: 'Check React build folder'
-
-    # Copy React build to artifact folder
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: '$(reactAppPath)/build'
-        Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)/wwwroot'
-      displayName: 'Copy React build to artifact'
-
-    # Build .NET backend
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'build'
-        projects: '$(backendPath)/CampaignManagement.csproj'
-        arguments: '--configuration $(buildConfiguration)'
-      displayName: 'Build .NET backend'
-
-    # Publish .NET backend
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'publish'
-        publishWebProjects: false
-        projects: '$(backendPath)/CampaignManagement.csproj'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/backend'
-        zipAfterPublish: true
-      displayName: 'Publish .NET backend'
-
-    # Publish artifacts
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
-      displayName: 'Publish Artifacts'
-
-# ---------------- Deploy Stage ----------------
-- stage: Deploy
-  displayName: 'Deploy Stage'
-  dependsOn: Build
-  jobs:
-  - deployment: DeployWeb
-    displayName: 'Deploy to Azure App Service'
-    environment: 'Production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: drop
-          - task: AzureWebApp@1
-            inputs:
-              azureSubscription: 'CampaignManagement-Deploy'  # your service connection
-              appType: 'webApp'
-              appName: 'ram-campaignapp'                        # your Azure App Service name
-              package: '$(Pipeline.Workspace)/drop/backend'
+# Optional: Copy React build to .NET project (if needed)
+# - task: CopyFiles@2
+#   inputs:
+#     SourceFolder: '$(System.DefaultWorkingDirectory)/campaign-management-app/build'
+#     Contents: '**'
+#     TargetFolder: '$(System.DefaultWorkingDirectory)/YourDotNetProject/wwwroot'
+#   displayName: 'Copy React build to .NET wwwroot'
