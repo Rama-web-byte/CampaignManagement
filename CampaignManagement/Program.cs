@@ -133,22 +133,38 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 #region Rate Limiting (APIs ONLY)
 builder.Services.AddRateLimiter(options =>
 {
+    // Global limiter
     options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
     {
         var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
 
-        return RateLimitPartition.GetTokenBucketLimiter(userId, _ =>
-            new TokenBucketRateLimiterOptions
-            {
-                TokenLimit = 100,
-                TokensPerPeriod = 100,
-                ReplenishmentPeriod = TimeSpan.FromMinutes(1),
-                QueueLimit = 0
-            });
+        return RateLimitPartition.GetTokenBucketLimiter(userId, _ => new TokenBucketRateLimiterOptions
+        {
+            TokenLimit = 100,
+            TokensPerPeriod = 100,
+            ReplenishmentPeriod = TimeSpan.FromMinutes(1),
+            QueueLimit = 0,
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+        });
+    });
+
+    // Write-specific limiter
+    options.AddPolicy("WritePolicy", context =>
+    {
+        var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
+
+        return RateLimitPartition.GetFixedWindowLimiter(userId, _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 20,
+            Window = TimeSpan.FromMinutes(1),
+            QueueLimit = 0,
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+        });
     });
 
     options.RejectionStatusCode = 429;
 });
+
 #endregion
 
 var app = builder.Build();

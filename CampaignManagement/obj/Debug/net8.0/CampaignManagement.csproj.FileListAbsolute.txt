@@ -320,3 +320,4 @@ C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignM
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\CampaignManagement.genruntimeconfig.cache
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\ref\CampaignManagement.dll
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\bin\Debug\net8.0\CampaignManagement.staticwebassets.runtime.json
+C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
