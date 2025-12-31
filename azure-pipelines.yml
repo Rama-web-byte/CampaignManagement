@@ -4,7 +4,7 @@ trigger:
       - main  # replace with your main branch if different
 
 pool:
-  vmImage: 'windows-latest'
+ name: MyPCAgent
 
 variables:
   buildConfiguration: 'Release'
