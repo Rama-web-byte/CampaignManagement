@@ -1,4 +1,6 @@
-const API_URL = "https://localhost:44340/api/Campaigns";
+
+//const API_URL = "https://localhost:44340/api/Campaigns";
+const API_URL = `${process.env.REACT_APP_API_URL?.replace(/\/$/, "")}/api/Campaigns`;
 
 // Always get fresh token
 function getToken() {

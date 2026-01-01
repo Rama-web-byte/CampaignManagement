@@ -1,4 +1,5 @@
-const API_URL="https://localhost:44340/api/User/login";
+const API_URL = `${process.env.REACT_APP_API_URL?.replace(/\/$/, "")}/api/User/login`;
+
 
 export async function loginService(email,password)
 {
