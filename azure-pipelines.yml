@@ -2,34 +2,89 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  name: MyPCAgent
 
-steps:
-# Checkout repo
-- task: Checkout@1
-  displayName: 'Checkout code'
+variables:
+  buildConfiguration: Release
+  reactAppPath: campaign-management-app
+  backendPath: CampaignManagement
 
-# Install Node.js 18
-- task: NodeTool@0
-  inputs:
-    versionSpec: '18.x'
-  displayName: 'Install Node.js 18'
+stages:
 
-# Build React App
-- script: |
-    npm install
-    npm run build --verbose
-  workingDirectory: '$(System.DefaultWorkingDirectory)/campaign-management-app'
-  displayName: 'Build React App'
+# ================= BUILD STAGE =================
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    displayName: Build React and .NET
+    steps:
 
-# Debug: Check build folder
-- script: dir "$(System.DefaultWorkingDirectory)/campaign-management-app/build"
-  displayName: 'Debug React build folder'
+    - checkout: self
 
-# Optional: Copy React build to .NET project (if needed)
-# - task: CopyFiles@2
-#   inputs:
-#     SourceFolder: '$(System.DefaultWorkingDirectory)/campaign-management-app/build'
-#     Contents: '**'
-#     TargetFolder: '$(System.DefaultWorkingDirectory)/YourDotNetProject/wwwroot'
-#   displayName: 'Copy React build to .NET wwwroot'
+    # ---- Node.js ----
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '18.x'
+      displayName: Install Node.js 18
+
+    # ---- React Build ----
+    - script: |
+        cd $(reactAppPath)
+        node -v
+        npm -v
+        npm install
+        npm run build
+      displayName: Build React App
+
+    # ---- Verify build folder ----
+    - script: |
+        dir "$(System.DefaultWorkingDirectory)\$(reactAppPath)\build"
+      displayName: Verify React build output
+
+    # ---- Build .NET ----
+    - task: DotNetCoreCLI@2
+      displayName: Build .NET
+      inputs:
+        command: build
+        projects: '$(backendPath)/**/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+
+    # ---- Publish .NET ----
+    - task: DotNetCoreCLI@2
+      displayName: Publish .NET
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '$(backendPath)/**/*.csproj'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/backend'
+        zipAfterPublish: true
+
+    # ---- Publish Artifacts ----
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: drop
+
+# ================= DEPLOY STAGE =================
+- stage: Deploy
+  displayName: Deploy to Azure App Service
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployWeb
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - download: current
+            artifact: drop
+
+          - task: AzureWebApp@1
+            displayName: Deploy .NET API
+            inputs:
+              azureSubscription: CampaignManagement-Deploy
+              appType: webApp
+              appName: ram-campaignapp
+              package: '$(Pipeline.Workspace)/drop/backend/*.zip'
