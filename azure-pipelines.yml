@@ -28,11 +28,13 @@ stages:
       displayName: Install Node.js 18
 
     # ---- Print debug info ----
+  
     - script: |
-        echo "React app path: $(reactAppPath)"
-        echo "Backend path: $(backendPath)"
-        pwd   # use `cd` if on Windows agent
+        echo React app path: $(reactAppPath)
+        echo Backend path: $(backendPath)
+        cd
       displayName: Print paths and working directory
+
 
     # ---- React Build ----
     - script: |
