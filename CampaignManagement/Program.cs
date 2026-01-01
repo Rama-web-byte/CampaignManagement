@@ -19,7 +19,7 @@ using CampaignManagement.Telemetry;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
-var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LogFiles");
+var logPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "LogFiles"); 
 Directory.CreateDirectory(logPath);
 try
 {
