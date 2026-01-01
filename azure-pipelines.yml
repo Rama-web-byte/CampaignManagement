@@ -28,27 +28,40 @@ stages:
       displayName: Install Node.js 18
 
     # ---- Print debug info ----
-  
     - script: |
+        echo "===== Repo root ====="
+        cd
+        echo "Current working directory: %CD%"
+
+        echo "===== React and Backend paths ====="
         echo React app path: $(reactAppPath)
         echo Backend path: $(backendPath)
-        cd
       displayName: Print paths and working directory
 
-
-    # ---- React Build ----
+    # ---- Build React ----
     - script: |
-        cd $(reactAppPath)
+        echo "===== Changing to React app folder ====="
+        cd "$(reactAppPath)"
+        echo "Directory now: %CD%"
+
+        echo "===== Node and npm versions ====="
         node -v
         npm -v
-        npm install
-        npm run build
-      displayName: Build React App
 
-    # ---- Verify build folder ----
-    - script: |
-        dir "$(System.DefaultWorkingDirectory)\$(reactAppPath)\build"
-      displayName: Verify React build output
+        echo "===== Installing dependencies ====="
+        npm install
+
+        echo "===== Running React build ====="
+        npm run build || echo "npm run build exited with code %ERRORLEVEL%"
+
+        echo "===== Verifying build folder ====="
+        if exist build (
+            echo "✅ Build folder exists"
+            dir build
+        ) else (
+            echo "❌ Build folder NOT created"
+        )
+      displayName: Build React App and Verify Output
 
     # ---- Build .NET ----
     - task: DotNetCoreCLI@2
