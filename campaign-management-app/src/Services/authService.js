@@ -1,5 +1,5 @@
 const API_URL = `${process.env.REACT_APP_API_URL?.replace(/\/$/, "")}/api/User/login`;
-
+console.log(API_URL);
 
 export async function loginService(email,password)
 {
