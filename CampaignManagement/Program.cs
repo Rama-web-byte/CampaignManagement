@@ -19,82 +19,86 @@ using CampaignManagement.Telemetry;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
-var builder = WebApplication.CreateBuilder(args);
-
-DotNetEnv.Env.Load();
-
-#region Telemetry
-builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
+var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LogFiles");
+Directory.CreateDirectory(logPath);
+try
 {
-    options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
-});
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApplicationInsightsTelemetry();
-builder.Services.AddSingleton<ITelemetryInitializer, JwtUserTelemetryInitializer>();
-#endregion
+    DotNetEnv.Env.Load();
 
-#region DB
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
-#endregion
-
-#region Validation
-builder.Services.AddValidatorsFromAssemblyContaining<CampaignValidator>();
-builder.Services.AddScoped<IValidator<User>, UserValidator>();
-builder.Services.AddFluentValidationAutoValidation();
-#endregion
-
-#region DI
-builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
-builder.Services.AddScoped<ICampaignService, CampaignService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserContext, UserContext>();
-builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
-builder.Services.AddScoped<IDashboardService, DashboardService>();
-#endregion
-
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddAutoMapper(typeof(Mapping));
-builder.Services.AddMemoryCache();
-builder.Services.AddControllers();
-
-#region Compression
-builder.Services.AddResponseCompression(options =>
-{
-    options.EnableForHttps = true;
-    options.Providers.Add<BrotliCompressionProvider>();
-    options.Providers.Add<GzipCompressionProvider>();
-});
-#endregion
-
-#region CORS (DEV ONLY)
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("DevCors", policy =>
+    #region Telemetry
+    builder.Services.AddOpenTelemetry().UseAzureMonitor(options =>
     {
-        policy.AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowAnyOrigin();
-    });
-});
-#endregion
-
-#region Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-    {
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Enter JWT token with 'Bearer ' prefix",
-        Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+        options.ConnectionString = builder.Configuration["ApplicationInsights:ConnectionString"];
     });
 
-    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    builder.Services.AddApplicationInsightsTelemetry();
+    builder.Services.AddSingleton<ITelemetryInitializer, JwtUserTelemetryInitializer>();
+    #endregion
+
+    #region DB
+    var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(connectionString));
+    #endregion
+
+    #region Validation
+    builder.Services.AddValidatorsFromAssemblyContaining<CampaignValidator>();
+    builder.Services.AddScoped<IValidator<User>, UserValidator>();
+    builder.Services.AddFluentValidationAutoValidation();
+    #endregion
+
+    #region DI
+    builder.Services.AddScoped<ICampaignRepository, CampaignRepository>();
+    builder.Services.AddScoped<ICampaignService, CampaignService>();
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IUserContext, UserContext>();
+    builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+    builder.Services.AddScoped<IDashboardService, DashboardService>();
+    #endregion
+
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddAutoMapper(typeof(Mapping));
+    builder.Services.AddMemoryCache();
+    builder.Services.AddControllers();
+
+    #region Compression
+    builder.Services.AddResponseCompression(options =>
     {
+        options.EnableForHttps = true;
+        options.Providers.Add<BrotliCompressionProvider>();
+        options.Providers.Add<GzipCompressionProvider>();
+    });
+    #endregion
+
+    #region CORS (DEV ONLY)
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("DevCors", policy =>
+        {
+            policy.AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowAnyOrigin();
+        });
+    });
+    #endregion
+
+    #region Swagger
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+        {
+            In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+            Description = "Enter JWT token with 'Bearer ' prefix",
+            Name = "Authorization",
+            Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+        });
+
+        c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+        {
         {
             new Microsoft.OpenApi.Models.OpenApiSecurityScheme
             {
@@ -106,76 +110,76 @@ builder.Services.AddSwaggerGen(c =>
             },
             Array.Empty<string>()
         }
-    });
-});
-#endregion
-
-#region JWT
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwtSettings["Key"])),
-        ClockSkew = TimeSpan.FromMinutes(2)
-    };
-});
-#endregion
-
-#region Rate Limiting (APIs ONLY)
-builder.Services.AddRateLimiter(options =>
-{
-    // Global limiter
-    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
-    {
-        var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
-
-        return RateLimitPartition.GetTokenBucketLimiter(userId, _ => new TokenBucketRateLimiterOptions
-        {
-            TokenLimit = 100,
-            TokensPerPeriod = 100,
-            ReplenishmentPeriod = TimeSpan.FromMinutes(1),
-            QueueLimit = 0,
-            QueueProcessingOrder = QueueProcessingOrder.OldestFirst
         });
     });
+    #endregion
 
-    // Write-specific limiter
-    options.AddPolicy("WritePolicy", context =>
+    #region JWT
+    var jwtSettings = builder.Configuration.GetSection("Jwt");
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
-
-        return RateLimitPartition.GetFixedWindowLimiter(userId, _ => new FixedWindowRateLimiterOptions
+        options.TokenValidationParameters = new TokenValidationParameters
         {
-            PermitLimit = 20,
-            Window = TimeSpan.FromMinutes(1),
-            QueueLimit = 0,
-            QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtSettings["Key"])),
+            ClockSkew = TimeSpan.FromMinutes(2)
+        };
+    });
+    #endregion
+
+    #region Rate Limiting (APIs ONLY)
+    builder.Services.AddRateLimiter(options =>
+    {
+        // Global limiter
+        options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+        {
+            var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
+
+            return RateLimitPartition.GetTokenBucketLimiter(userId, _ => new TokenBucketRateLimiterOptions
+            {
+                TokenLimit = 100,
+                TokensPerPeriod = 100,
+                ReplenishmentPeriod = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+            });
         });
+
+        // Write-specific limiter
+        options.AddPolicy("WritePolicy", context =>
+        {
+            var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
+
+            return RateLimitPartition.GetFixedWindowLimiter(userId, _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 20,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+            });
+        });
+
+        options.RejectionStatusCode = 429;
     });
 
-    options.RejectionStatusCode = 429;
-});
+    #endregion
 
-#endregion
+    var app = builder.Build();
 
-var app = builder.Build();
-
-#region DB Seed
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    DbSeeder.SeedUsers(dbContext);
-}
-#endregion
+    #region DB Seed
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        DbSeeder.SeedUsers(dbContext);
+    }
+    #endregion
 
 // ================= MIDDLEWARE PIPELINE =================
 
@@ -205,3 +209,10 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
+}
+catch (Exception ex)
+{
+
+    File.WriteAllText(Path.Combine(logPath, "startup_errors.txt"), ex.ToString());
+    throw;
+}
