@@ -38,10 +38,12 @@ try
     #endregion
 
     #region DB
-    var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+    var connectionString = builder.Configuration.GetConnectionString("DB_CONNECTION_STRING");
+
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(connectionString));
     #endregion
+
 
     #region Validation
     builder.Services.AddValidatorsFromAssemblyContaining<CampaignValidator>();
