@@ -19,8 +19,9 @@ using CampaignManagement.Telemetry;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
-var logPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "LogFiles"); 
+var logPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "LogFiles");
 Directory.CreateDirectory(logPath);
+
 try
 {
     var builder = WebApplication.CreateBuilder(args);
@@ -40,10 +41,20 @@ try
     #region DB
     var connectionString = builder.Configuration.GetConnectionString("DB_CONNECTION_STRING");
 
-    builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlServer(connectionString));
-    #endregion
+    if (string.IsNullOrWhiteSpace(connectionString))
+        throw new Exception("DB_CONNECTION_STRING is missing in Azure Connection Strings.");
 
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(
+            connectionString,
+            sqlOptions => sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(10),
+                errorNumbersToAdd: null
+            )
+        )
+    );
+    #endregion
 
     #region Validation
     builder.Services.AddValidatorsFromAssemblyContaining<CampaignValidator>();
@@ -119,27 +130,26 @@ try
     #region JWT
     var jwtSettings = builder.Configuration.GetSection("Jwt");
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
+        .AddJwtBearer(options =>
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(jwtSettings["Key"])),
-            ClockSkew = TimeSpan.FromMinutes(2)
-        };
-    });
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidAudience = jwtSettings["Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(jwtSettings["Key"])),
+                ClockSkew = TimeSpan.FromMinutes(2)
+            };
+        });
     #endregion
 
     #region Rate Limiting (APIs ONLY)
     builder.Services.AddRateLimiter(options =>
     {
-        // Global limiter
         options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
         {
             var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
@@ -154,7 +164,6 @@ try
             });
         });
 
-        // Write-specific limiter
         options.AddPolicy("WritePolicy", context =>
         {
             var userId = context.User?.FindFirst("UserId")?.Value ?? "anonymous";
@@ -170,51 +179,57 @@ try
 
         options.RejectionStatusCode = 429;
     });
-
     #endregion
 
     var app = builder.Build();
 
-    #region DB Seed
+    #region DB Seed (safe)
     using (var scope = app.Services.CreateScope())
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        DbSeeder.SeedUsers(dbContext);
+        try
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            DbSeeder.SeedUsers(dbContext);
+        }
+        catch (Exception ex)
+        {
+            var seedLog = Path.Combine(logPath, "db_seed_error.txt");
+            File.WriteAllText(seedLog, ex.ToString());
+        }
     }
     #endregion
 
-// ================= MIDDLEWARE PIPELINE =================
+    // ================= MIDDLEWARE PIPELINE =================
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseCors("DevCors");
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseCors("DevCors");
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    app.UseResponseCompression();
+    app.UseHttpsRedirection();
 
-app.UseResponseCompression();
-app.UseHttpsRedirection();
+    /* ✅ SERVE REACT */
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
 
-/* ✅ SERVE REACT */
-app.UseDefaultFiles();   // index.html
-app.UseStaticFiles();    // js/css/assets
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseRateLimiter();
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseRateLimiter();
+    /* APIs */
+    app.MapControllers();
 
-/* APIs */
-app.MapControllers();
+    /* ✅ REACT ROUTER FALLBACK */
+    app.MapFallbackToFile("index.html");
 
-/* ✅ REACT ROUTER FALLBACK */
-app.MapFallbackToFile("index.html");
-
-app.Run();
+    app.Run();
 }
 catch (Exception ex)
 {
-
-    File.WriteAllText(Path.Combine(logPath, "startup_errors.txt"), ex.ToString());
+    var startupLog = Path.Combine(logPath, "startup_errors.txt");
+    File.WriteAllText(startupLog, ex.ToString());
     throw;
 }
