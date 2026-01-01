@@ -1,5 +1,6 @@
 //const API_URL = "https://localhost:44340/api/Dashboard";
-const API_URL = `${process.env.REACT_APP_API_URL?.replace(/\/$/, "")}/api/Dashboard`;
+const API_URL = "/api/Dashboard";
+console.log(API_URL);
 
 
 function getToken()
