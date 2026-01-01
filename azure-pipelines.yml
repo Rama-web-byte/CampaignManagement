@@ -43,7 +43,9 @@ stages:
         npm run build
 
         echo "===== Copy React build to .NET wwwroot ====="
-        xcopy /E /I /Y build\* "..\$(backendPath)\wwwroot\"
+        xcopy /E /I /Y build\* "$(Build.SourcesDirectory)\$(backendPath)\wwwroot\"
+        echo "✅ React build copied"
+        dir "$(Build.SourcesDirectory)\$(backendPath)\wwwroot"
       displayName: Build React and Copy to wwwroot
 
     # ---- Build .NET ----
