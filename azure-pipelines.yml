@@ -27,14 +27,6 @@ stages:
         versionSpec: '18.x'
       displayName: Install Node.js 18
 
-    # ---- Print debug info ----
-    - script: |
-        echo "===== Repo root ====="
-        echo Current working directory: %CD%
-        echo React app path: $(reactAppPath)
-        echo Backend path: $(backendPath)
-      displayName: Print paths
-
     # ---- Build React ----
     - script: |
         echo "===== Building React app ====="
@@ -43,8 +35,11 @@ stages:
         npm run build
 
         echo "===== Copy React build to .NET wwwroot ====="
-        xcopy /E /I /Y build\* "$(Build.SourcesDirectory)\$(backendPath)\wwwroot\"
-        echo "✅ React build copied"
+        echo "Source: $(Build.SourcesDirectory)\$(reactAppPath)\build"
+        echo "Destination: $(Build.SourcesDirectory)\$(backendPath)\wwwroot"
+        xcopy /E /I /Y "$(Build.SourcesDirectory)\$(reactAppPath)\build\*" "$(Build.SourcesDirectory)\$(backendPath)\wwwroot\"
+
+        echo "===== Verify wwwroot contents ====="
         dir "$(Build.SourcesDirectory)\$(backendPath)\wwwroot"
       displayName: Build React and Copy to wwwroot
 
