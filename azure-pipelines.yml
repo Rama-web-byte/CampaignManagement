@@ -13,7 +13,7 @@ stages:
 
 # ================= BUILD STAGE =================
 - stage: Build
-  displayName: Build
+  displayName: Build React + .NET
   jobs:
   - job: Build
     displayName: Build React and .NET
@@ -21,7 +21,7 @@ stages:
 
     - checkout: self
 
-    # ---- Node.js ----
+    # ---- Install Node.js ----
     - task: NodeTool@0
       inputs:
         versionSpec: '18.x'
@@ -30,38 +30,21 @@ stages:
     # ---- Print debug info ----
     - script: |
         echo "===== Repo root ====="
-        cd
-        echo "Current working directory: %CD%"
-
-        echo "===== React and Backend paths ====="
+        echo Current working directory: %CD%
         echo React app path: $(reactAppPath)
         echo Backend path: $(backendPath)
-      displayName: Print paths and working directory
+      displayName: Print paths
 
     # ---- Build React ----
     - script: |
-        echo "===== Changing to React app folder ====="
+        echo "===== Building React app ====="
         cd "$(reactAppPath)"
-        echo "Directory now: %CD%"
-
-        echo "===== Node and npm versions ====="
-        node -v
-        npm -v
-
-        echo "===== Installing dependencies ====="
         npm install
+        npm run build
 
-        echo "===== Running React build ====="
-        npm run build || echo "npm run build exited with code %ERRORLEVEL%"
-
-        echo "===== Verifying build folder ====="
-        if exist build (
-            echo "✅ Build folder exists"
-            dir build
-        ) else (
-            echo "❌ Build folder NOT created"
-        )
-      displayName: Build React App and Verify Output
+        echo "===== Copy React build to .NET wwwroot ====="
+        xcopy /E /I /Y build\* "..\$(backendPath)\wwwroot\"
+      displayName: Build React and Copy to wwwroot
 
     # ---- Build .NET ----
     - task: DotNetCoreCLI@2
@@ -100,11 +83,13 @@ stages:
         deploy:
           steps:
 
+          # ---- Download artifacts ----
           - download: current
             artifact: drop
 
+          # ---- Deploy to Azure App Service ----
           - task: AzureWebApp@1
-            displayName: Deploy .NET API
+            displayName: Deploy .NET + React
             inputs:
               azureSubscription: CampaignManagement-Deploy
               appType: webApp
