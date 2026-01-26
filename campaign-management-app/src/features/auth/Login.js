@@ -54,7 +54,7 @@ export default function Login() {
               <label className="block text-gray-200 font-medium mb-1">Email</label>
               <input
                 type="email"
-                placeholder="rama@example.com"
+                placeholder="admin@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-5 py-3 rounded-xl bg-gray-800 text-teal-100 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
@@ -80,7 +80,7 @@ export default function Login() {
             </button>
           </form>
           <p className="text-center text-gray-400 mt-6 text-sm">
-            Demo login: rama@example.com / password
+            Demo login: admin@example.com / Admin@123
           </p>
         </div>
       </div>

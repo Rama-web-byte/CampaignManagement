@@ -1,0 +1,95 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: Release
+  reactAppPath: campaign-management-app
+  backendPath: CampaignManagement
+
+stages:
+
+# ================= BUILD STAGE =================
+- stage: Build
+  displayName: Build React + .NET
+  jobs:
+  - job: Build
+    displayName: Build React and .NET
+    steps:
+
+    - checkout: self
+
+    # ---- Install Node.js ----
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '18.x'
+      displayName: Install Node.js 18
+
+    # ---- Build React ----
+    - script: |
+        echo "===== Building React app ====="
+        cd "$(reactAppPath)"
+        npm install
+        npm run build
+
+        echo "===== Copy React build to .NET wwwroot ====="
+        echo "Source: $(Build.SourcesDirectory)\$(reactAppPath)\build"
+        echo "Destination: $(Build.SourcesDirectory)\$(backendPath)\wwwroot"
+        xcopy /E /I /Y "$(Build.SourcesDirectory)\$(reactAppPath)\build\*" "$(Build.SourcesDirectory)\$(backendPath)\wwwroot\"
+
+        echo "===== Verify wwwroot contents ====="
+        dir "$(Build.SourcesDirectory)\$(backendPath)\wwwroot"
+      displayName: Build React and Copy to wwwroot
+
+    # ---- Build .NET ----
+    - task: DotNetCoreCLI@2
+      displayName: Build .NET
+      inputs:
+        command: build
+        projects: '$(backendPath)/**/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+
+    # ---- Publish .NET ----
+    - task: DotNetCoreCLI@2
+      displayName: Publish .NET
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '$(backendPath)/**/*.csproj'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/backend'
+        zipAfterPublish: true
+
+    # ---- Publish Artifacts ----
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: drop
+
+# ================= DEPLOY STAGE =================
+- stage: Deploy
+  displayName: Deploy to Azure App Service
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeployWeb
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          # ---- Download artifacts ----
+          - download: current
+            artifact: drop
+
+          # ---- Deploy to Azure App Service ----
+          - task: AzureWebApp@1
+            displayName: Deploy .NET + React
+            inputs:
+              azureSubscription: CampaignManagement-Arun-Deploy
+              appType: webApp
+              appName: plan-campaign-demo
+              resourceGroupName: rg-campaign-demo
+              package: '$(Pipeline.Workspace)/drop/backend/*.zip'

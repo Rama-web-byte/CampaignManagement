@@ -9,6 +9,9 @@ wwwroot\static\css\main.fb5f11a1.css
 wwwroot\static\css\main.fb5f11a1.css.map
 wwwroot\static\js\453.5fa3f46d.chunk.js
 wwwroot\static\js\453.5fa3f46d.chunk.js.map
+wwwroot\static\js\main.3498aca4.js
+wwwroot\static\js\main.3498aca4.js.LICENSE.txt
+wwwroot\static\js\main.3498aca4.js.map
 wwwroot\static\js\main.4b36e0d8.js
 wwwroot\static\js\main.4b36e0d8.js.LICENSE.txt
 wwwroot\static\js\main.4b36e0d8.js.map

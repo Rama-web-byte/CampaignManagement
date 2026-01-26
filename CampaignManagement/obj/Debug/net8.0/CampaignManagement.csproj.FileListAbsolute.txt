@@ -144,6 +144,7 @@ C:\Users\Dell Inspiron\source\repos\CampaignManagement\obj\Debug\net8.0\Campaign
 C:\Users\Dell Inspiron\source\repos\CampaignManagement\obj\Debug\net8.0\ref\CampaignManagement.dll
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\bin\Debug\net8.0\appsettings.json
+C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\bin\Debug\net8.0\CampaignManagement.staticwebassets.runtime.json
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\bin\Debug\net8.0\CampaignManagement.staticwebassets.endpoints.json
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\bin\Debug\net8.0\CampaignManagement.exe
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\bin\Debug\net8.0\CampaignManagement.deps.json
@@ -312,6 +313,7 @@ C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignM
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.CampaignManagement.props
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.CampaignManagement.props
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\Campaign.8A47ED3E.Up2Date
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\CampaignManagement.dll
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\refint\CampaignManagement.dll
@@ -319,5 +321,3 @@ C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignM
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\CampaignManagement.pdb
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\CampaignManagement.genruntimeconfig.cache
 C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\ref\CampaignManagement.dll
-C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\bin\Debug\net8.0\CampaignManagement.staticwebassets.runtime.json
-C:\Users\ramth\source\GIT Local Repo\GIT Local Repo\CampaignManagement\CampaignManagement\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
